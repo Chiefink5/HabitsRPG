@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillForge MVP</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="logo">⛏ SkillForge</div>
+  <div class="stats">
+    <span id="levelBadge">Lv 1</span>
+    <span id="coinBadge">🪙 0</span>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button onclick="showTab('dashboard')">Dashboard</button>
+  <button onclick="showTab('skills')">Skills</button>
+  <button onclick="showTab('rewards')">Rewards</button>
+  <button onclick="showTab('quests')">Quests</button>
+</nav>
+
+<main>
+  <section id="dashboard" class="tab"></section>
+  <section id="skills" class="tab"></section>
+  <section id="rewards" class="tab"></section>
+  <section id="quests" class="tab"></section>
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
