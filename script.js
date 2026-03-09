@@ -350,29 +350,14 @@ render = function(){
 };
 
 
-/* ===== V6.4 TAB/VIEW HARD FIX ===== */
+/* ===== V6.5 PANEL FIX ===== */
 (function(){
-  const originalSetTab = setTab;
+  const __originalSetTab = setTab;
   setTab = function(tab){
-    originalSetTab(tab);
-    const panels = ["dashboard","skills","rewards","quests","analytics"];
-    panels.forEach(name => {
-      const panel = document.getElementById(name + "Tab");
-      if(panel){
-        panel.style.display = (name === tab) ? "block" : "none";
-      }
-    });
+    __originalSetTab(tab);
     const active = document.querySelector('.tabs .tab-btn.active');
     if(active){
       active.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
     }
-  };
-
-  const originalRender = render;
-  render = function(){
-    originalRender();
-    const activeBtn = document.querySelector('.tabs .tab-btn.active');
-    const activeTab = activeBtn ? activeBtn.dataset.tab : 'dashboard';
-    setTab(activeTab);
   };
 })();
