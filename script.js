@@ -29,17 +29,267 @@ function sSort(a,b){if(skillSort==="name")return a.name.localeCompare(b.name);if
 function topSkills(){return[...state.skills].sort((a,b)=>(b.level-a.level)||(b.xp-a.xp)).slice(0,4)}
 function topRewards(){return state.rewards.slice(0,4)}
 function recentFeed(){return state.activityLog.slice(0,6)}
-function dashboard(){const active=state.quests.filter(q=>!q.completed).length,top=topSkills(),rewards=topRewards(),recent=recentFeed(),theme=state.settings.theme;if(theme==="nether"){return `<div class="grid2"><div class="card"><div class="section-header"><div><div class="card-title">BLAZE BOARD</div><div class="card-sub">harsh crate-style summary</div></div><button class="btn primary" data-form="habit">+ HIT</button></div><div class="hero"><div class="avatar-card"><div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel).toUpperCase()}</div></div></div><div class="hero-stats"><div class="stat-chip"><div class="value">${state.stats.overallLevel}</div><div class="name">OVERALL LV</div></div><div class="stat-chip"><div class="value">${state.wallet.coins}</div><div class="name">COINS</div></div><div class="stat-chip"><div class="value">${state.stats.habitsCompletedToday}</div><div class="name">TODAY</div></div><div class="stat-chip"><div class="value">${active}</div><div class="name">QUESTS</div></div><div class="stat-chip"><div class="value">${state.analytics.negativeHits}</div><div class="name">CURSES</div></div><div class="stat-chip"><div class="value">${state.analytics.totalXpLost}</div><div class="name">XP LOST</div></div></div></div></div><div class="card"><div class="section-header"><div><div class="card-title">CRATE OFFERS</div><div class="card-sub">reward inventory preview</div></div><button class="btn secondary" data-go="rewards">SHOP</button></div><div class="reward-grid">${rewards.map(r=>`<div class="reward-card"><div class="reward-plate">${r.icon}</div><div class="label">${esc(r.name)}</div><div class="card-sub">${esc(r.category)}</div><div class="button-row" style="margin-top:10px"><button class="btn primary" ${state.wallet.coins>=r.cost?"":"disabled"} data-buy="${r.id}">🪙 ${r.cost}</button></div></div>`).join("")}</div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">TOP BUILDS</div><button class="btn secondary" data-go="skills">SKILLS</button></div><div class="list-stack">${top.map(s=>`<div class="row"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">LV ${s.level}</div></div></div><div>${s.xp}/${s.xpRequired}</div></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">FEED</div><button class="btn secondary" data-go="analytics">STATS</button></div><div class="list-stack">${recent.length?recent.map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join(""):`<div class="row"><div class="muted">No activity yet.</div></div>`}</div></div></div>`}
-if(theme==="end"){return `<div class="hero"><div class="card avatar-card"><div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel)}</div></div></div><div class="card"><div class="section-header"><div><div class="card-title">End Bazaar Control</div><div class="card-sub">clean, rounded, side-nav bazaar look</div></div><button class="btn primary" data-form="habit">+ Habit</button></div><div class="hero-stats"><div class="stat-chip"><div class="value">${state.stats.overallLevel}</div><div class="name">Overall Level</div></div><div class="stat-chip"><div class="value">${state.wallet.coins}</div><div class="name">Coins</div></div><div class="stat-chip"><div class="value">${state.stats.xpEarnedToday}</div><div class="name">XP Today</div></div><div class="stat-chip"><div class="value">${active}</div><div class="name">Active Quests</div></div><div class="stat-chip"><div class="value">${state.analytics.totalXpEarned}</div><div class="name">Lifetime XP</div></div><div class="stat-chip"><div class="value">${state.analytics.totalQuestsDone}</div><div class="name">Quests Done</div></div></div></div></div><div style="height:14px"></div><div class="grid3"><div class="card"><div class="section-header"><div class="card-title">Top Skills</div><button class="btn secondary" data-go="skills">View</button></div><div class="list-stack">${top.map(s=>`<div class="row"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">Lv ${s.level}</div></div></div></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Featured Rewards</div><button class="btn secondary" data-go="rewards">Shop</button></div><div class="list-stack">${rewards.map(r=>`<div class="row"><div class="row-left"><div class="iconbox">${r.icon}</div><div><div class="label">${esc(r.name)}</div><div class="muted">${r.category}</div></div></div><div class="label">🪙 ${r.cost}</div></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Recent Feed</div><button class="btn secondary" data-go="analytics">Stats</button></div><div class="list-stack">${recent.length?recent.map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join(""):`<div class="row"><div class="muted">No activity yet.</div></div>`}</div></div></div>`}
-return `<div class="card hero"><div class="avatar-card"><div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel)}</div></div></div><div><div class="section-header"><div><div class="card-title">Overworld Merchant Board</div><div class="card-sub">clean village-trader dashboard</div></div><button class="btn primary" data-form="habit">+ Habit</button></div><div class="hero-stats"><div class="stat-chip"><div class="value">${state.stats.overallLevel}</div><div class="name">Overall Level</div></div><div class="stat-chip"><div class="value">${state.wallet.coins}</div><div class="name">Coins</div></div><div class="stat-chip"><div class="value">${state.stats.habitsCompletedToday}</div><div class="name">Habits Today</div></div><div class="stat-chip"><div class="value">${active}</div><div class="name">Active Quests</div></div><div class="stat-chip"><div class="value">${state.stats.xpEarnedToday}</div><div class="name">XP Today</div></div><div class="stat-chip"><div class="value">${state.stats.rewardsRedeemed}</div><div class="name">Rewards Redeemed</div></div></div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Top Skills</div><button class="btn secondary" data-go="skills">Open Skills</button></div><div class="list-stack">${top.map(s=>`<div class="row"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">Lv ${s.level}</div></div></div><div>${s.xp}/${s.xpRequired}</div></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Reward Preview</div><button class="btn secondary" data-go="rewards">Open Shop</button></div><div class="reward-grid">${rewards.map(r=>`<div class="reward-card"><div class="reward-plate">${r.icon}</div><div class="label">${esc(r.name)}</div><div class="card-sub">${r.category}</div><div class="label" style="margin-top:8px">🪙 ${r.cost}</div></div>`).join("")}</div></div></div><div style="height:14px"></div><div class="card"><div class="section-header"><div class="card-title">Recent Activity</div><button class="btn secondary" data-go="analytics">Analytics</button></div><div class="list-stack">${recent.length?recent.map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join(""):`<div class="row"><div class="muted">No activity yet.</div></div>`}</div></div>`}
-function skillCard(s){const habits=state.habits.filter(h=>h.skillId===s.id),pct=Math.min(100,Math.round(s.xp/s.xpRequired*100));return `<div class="skill-card"><div class="section-header"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">${esc(s.description||"No description")}</div></div></div><div class="button-row"><div class="chip">Lv ${s.level}</div><button class="small-btn secondary" data-edit-skill="${s.id}">Edit</button><button class="small-btn secondary" data-toggle-skill="${s.id}">${s.expanded?"Collapse":"Open"}</button></div></div><div class="progress"><span style="width:${pct}%"></span></div><div class="row" style="margin-top:8px"><span class="muted">${s.xp}/${s.xpRequired} XP</span><span class="muted">${habits.length} habits</span></div><div class="button-row" style="margin-top:12px"><button class="btn secondary" data-add-habit-under="${s.id}">+ Habit</button></div>${s.expanded?`<div class="habit-list">${habits.length?habits.map(habitCard).join(""):`<div class="habit-item"><div class="muted">No habits here yet.</div></div>`}</div>`:""}</div>`}
-function habitCard(h){const skill=getSkill(h.skillId);return `<div class="habit-item"><div class="section-header"><div class="row-left"><div class="iconbox" style="width:38px;height:38px">${h.icon}</div><div><div class="label">${esc(h.name)}</div><div class="muted">${esc(h.description||"No description")}</div></div></div><button class="small-btn secondary" data-edit-habit="${h.id}">Edit</button></div><div class="meta-chips"><span class="chip ${h.isNegative?"bad":""}">${h.isNegative?`-${Math.ceil(h.xpReward*1.5)} XP`:`+${h.xpReward} XP`}</span><span class="chip ${h.isNegative?"bad":""}">${h.isNegative?`-${Math.ceil(h.coinReward*1.5)} coins`:`+${h.coinReward} coins`}</span><span class="chip">Today ${h.timesCompletedToday}/${h.dailyCap}</span><span class="chip">Streak ${h.streak}</span>${h.isNegative?`<span class="chip bad">Negative</span>`:""}</div><div class="section-header" style="margin-top:12px"><div class="muted">${skill?skill.icon+" "+esc(skill.name):""}</div><div class="button-row"><button class="small-btn danger" data-undo-habit="${h.id}">−</button><button class="small-btn primary" data-hit-habit="${h.id}">${h.isNegative?"!":"+"}</button></div></div></div>`}
-function skills(){const filtered=[...state.skills].sort(sSort).filter(s=>`${s.name} ${s.description} ${state.habits.filter(h=>h.skillId===s.id).map(h=>h.name+" "+h.description).join(" ")}`.toLowerCase().includes(skillSearch.toLowerCase()));return `<div class="card"><div class="section-header"><div><div class="card-title">Skills</div><div class="card-sub">same systems, theme shell changes</div></div><button class="btn primary" data-form="skill">+ Skill</button></div><div class="button-row" style="margin-bottom:12px"><input id="skillSearch" placeholder="Search skills or habits..." value="${esc(skillSearch)}" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><select id="skillSort" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><option value="recent" ${skillSort==="recent"?"selected":""}>Sort: Recent</option><option value="level" ${skillSort==="level"?"selected":""}>Sort: Level</option><option value="name" ${skillSort==="name"?"selected":""}>Sort: Name</option><option value="progress" ${skillSort==="progress"?"selected":""}>Sort: Progress</option></select></div><div class="skill-grid">${filtered.length?filtered.map(skillCard).join(""):`<div class="card"><div class="muted">No matching skills.</div></div>`}</div></div>`}
-function rewardCard(r){const afford=state.wallet.coins>=r.cost;return `<div class="reward-card ${afford?"":"reward-disabled"}"><div class="reward-plate">${r.icon}</div><div class="label">${esc(r.name)}</div><div class="card-sub">${esc(r.category)}${r.note?` · ${esc(r.note)}`:""}</div><div class="section-header" style="margin-top:10px"><div class="label">🪙 ${r.cost}</div><div class="chip">${r.repeatable?"Repeatable":"One-time"}</div></div><div class="button-row" style="margin-top:10px"><button class="btn primary" ${afford?"":"disabled"} data-buy="${r.id}">Redeem</button><button class="btn secondary" data-edit-reward="${r.id}">Edit</button></div></div>`}
-function rewards(){const cats=["All",...new Set(state.rewards.map(r=>r.category))],items=state.rewards.filter(r=>rewardFilter==="All"||r.category===rewardFilter);return `<div class="card"><div class="section-header"><div><div class="card-title">Reward Shop</div><div class="card-sub">inventory changes with theme shell</div></div><button class="btn primary" data-form="reward">+ Reward</button></div><div class="row" style="margin-bottom:12px"><div><div class="label">Wallet</div><div class="muted">Spend coins on mini wins</div></div><div class="label">🪙 ${state.wallet.coins}</div></div><div class="filters" style="margin-bottom:12px">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div><div class="reward-grid">${items.length?items.map(rewardCard).join(""):`<div class="card"><div class="muted">No rewards in this filter.</div></div>`}</div></div>`}
-function questCard(q){const p=qProg(q),pct=Math.min(100,Math.round((p.current/p.target)*100));return `<div class="quest-card"><div class="section-header"><div><div class="label">${qIcon(q)} ${esc(q.title)}</div><div class="muted">${qType(q.type)}</div></div><button class="btn secondary" data-edit-quest="${q.id}">Edit</button></div><div class="progress"><span style="width:${pct}%"></span></div><div class="row" style="margin-top:10px"><span>${p.current}/${p.target}</span><span>🪙 ${q.rewardCoins}</span></div>${q.completed?`<div class="muted" style="margin-top:8px">Completed ${new Date(q.completedAt).toLocaleDateString()}</div>`:""}</div>`}
-function quests(){const items=state.quests.filter(q=>questFilter==="All"?true:questFilter==="Completed"?q.completed:!q.completed);return `<div class="card"><div class="section-header"><div><div class="card-title">Quests</div><div class="card-sub">auto-complete and auto-pay still intact</div></div><button class="btn primary" data-form="quest">+ Quest</button></div><div class="filters" style="margin-bottom:12px">${["Active","Completed","All"].map(x=>`<button class="filter-pill ${questFilter===x?"active":""}" data-quest-filter="${x}">${x}</button>`).join("")}</div><div class="list-stack">${items.length?items.map(questCard).join(""):`<div class="card"><div class="muted">No quests in this view.</div></div>`}</div></div>`}
-function analytics(){const topHabits=[...state.habits].sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5),topNeg=state.habits.filter(h=>h.isNegative).sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5),topSkills=[...state.skills].sort((a,b)=>b.level-a.level||b.xp-a.xp).slice(0,5);return `<div class="grid3"><div class="stat-card"><div class="muted">Total habits applied</div><div class="stat-big">${state.analytics.totalHabitsApplied}</div></div><div class="stat-card"><div class="muted">Positive hits</div><div class="stat-big">${state.analytics.positiveHits}</div></div><div class="stat-card"><div class="muted">Negative hits</div><div class="stat-big">${state.analytics.negativeHits}</div></div><div class="stat-card"><div class="muted">Total XP earned</div><div class="stat-big">${state.analytics.totalXpEarned}</div></div><div class="stat-card"><div class="muted">Total XP lost</div><div class="stat-big">${state.analytics.totalXpLost}</div></div><div class="stat-card"><div class="muted">Quests completed</div><div class="stat-big">${state.analytics.totalQuestsDone}</div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Top Skills</div></div><div class="list-stack">${topSkills.length?topSkills.map(s=>`<div class="row"><span>${s.icon} ${esc(s.name)}</span><strong>Lv ${s.level}</strong></div>`).join(""):`<div class="row"><div class="muted">No skills.</div></div>`}</div></div><div class="card"><div class="section-header"><div class="card-title">Top Habits</div></div><div class="list-stack">${topHabits.length?topHabits.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions}</strong></div>`).join(""):`<div class="row"><div class="muted">No habits.</div></div>`}</div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Negative Habit Damage</div></div><div class="list-stack">${topNeg.length?topNeg.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions} hits</strong></div>`).join(""):`<div class="row"><div class="muted">No negative habits tracked.</div></div>`}</div></div><div class="card"><div class="section-header"><div class="card-title">Economy</div></div><div class="list-stack"><div class="row"><span>Current coins</span><strong>${state.wallet.coins}</strong></div><div class="row"><span>Total coins earned</span><strong>${state.wallet.totalCoinsEarned}</strong></div><div class="row"><span>Total coins spent</span><strong>${state.wallet.totalCoinsSpent}</strong></div><div class="row"><span>Rewards redeemed</span><strong>${state.stats.rewardsRedeemed}</strong></div></div></div></div>`}
+
+function dashboard(){
+  const active=state.quests.filter(q=>!q.completed).length,top=topSkills(),rewards=topRewards(),recent=recentFeed(),theme=state.settings.theme;
+
+  if(theme==="nether"){
+    const activeQuests = state.quests.filter(q=>!q.completed).slice(0,4);
+    return `
+    <div class="nether-shell">
+      <div class="nether-banner card">
+        <div class="section-header">
+          <div>
+            <div class="card-title">BLAZE CRATE HUB</div>
+            <div class="card-sub">dense vendor board / fast actions / loot-first layout</div>
+          </div>
+          <div class="button-row">
+            <button class="btn primary" data-form="habit">+ HIT</button>
+            <button class="btn secondary" data-form="reward">+ CRATE</button>
+          </div>
+        </div>
+        <div class="nether-banner-grid">
+          <div class="avatar-card">
+            <div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel).toUpperCase()}</div></div>
+          </div>
+          <div class="nether-stat-wall">
+            <div class="nether-stat"><span>LV</span><strong>${state.stats.overallLevel}</strong></div>
+            <div class="nether-stat"><span>COINS</span><strong>${state.wallet.coins}</strong></div>
+            <div class="nether-stat"><span>TODAY</span><strong>${state.stats.habitsCompletedToday}</strong></div>
+            <div class="nether-stat"><span>QUESTS</span><strong>${active}</strong></div>
+            <div class="nether-stat"><span>CURSES</span><strong>${state.analytics.negativeHits}</strong></div>
+            <div class="nether-stat"><span>XP LOST</span><strong>${state.analytics.totalXpLost}</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="section-header"><div class="card-title">HOT CRATES</div><button class="btn secondary" data-go="rewards">FULL SHOP</button></div>
+          <div class="nether-reward-strip">
+            ${rewards.map(r=>`
+              <div class="nether-reward-box">
+                <div class="nether-reward-icon">${r.icon}</div>
+                <div class="label">${esc(r.name)}</div>
+                <div class="muted">${esc(r.category)}</div>
+                <button class="btn primary" ${state.wallet.coins>=r.cost?"":"disabled"} data-buy="${r.id}">🪙 ${r.cost}</button>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-header"><div class="card-title">LIVE QUEST BOARD</div><button class="btn secondary" data-go="quests">ALL QUESTS</button></div>
+          <div class="list-stack">
+            ${activeQuests.length ? activeQuests.map(q=>{
+              const p=qProg(q), pct=Math.min(100,Math.round((p.current/p.target)*100));
+              return `<div class="nether-quest-line">
+                <div class="row-left"><div class="iconbox">${qIcon(q)}</div><div><div class="label">${esc(q.title)}</div><div class="muted">${p.current}/${p.target}</div></div></div>
+                <div class="nether-mini-bar"><span style="width:${pct}%"></span></div>
+              </div>`;
+            }).join("") : `<div class="row"><div class="muted">No active quests.</div></div>`}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="section-header"><div class="card-title">TOP BUILDS</div><button class="btn secondary" data-go="skills">OPEN TREE</button></div>
+          <div class="list-stack">
+            ${top.map(s=>`
+              <div class="nether-skill-line">
+                <div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">LV ${s.level}</div></div></div>
+                <div class="nether-mini-bar"><span style="width:${Math.min(100,Math.round(s.xp/s.xpRequired*100))}%"></span></div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+        <div class="card">
+          <div class="section-header"><div class="card-title">ACTIVITY FEED</div><button class="btn secondary" data-go="analytics">STATS</button></div>
+          <div class="list-stack">
+            ${recent.length ? recent.map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join("") : `<div class="row"><div class="muted">No activity yet.</div></div>`}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(theme==="end"){
+    const activeQuests = state.quests.filter(q=>!q.completed).slice(0,3);
+    return `
+    <div class="end-shell">
+      <div class="end-hero-grid">
+        <div class="card avatar-card">
+          <div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel)}</div></div>
+        </div>
+        <div class="card end-command">
+          <div class="section-header">
+            <div>
+              <div class="card-title">End Bazaar Command</div>
+              <div class="card-sub">premium terminal layout / curated widgets / cleaner spacing</div>
+            </div>
+            <button class="btn primary" data-form="habit">+ Habit</button>
+          </div>
+          <div class="end-widget-grid">
+            <div class="end-widget"><span>Overall</span><strong>${state.stats.overallLevel}</strong></div>
+            <div class="end-widget"><span>Coins</span><strong>${state.wallet.coins}</strong></div>
+            <div class="end-widget"><span>XP Today</span><strong>${state.stats.xpEarnedToday}</strong></div>
+            <div class="end-widget"><span>Quests</span><strong>${active}</strong></div>
+            <div class="end-widget"><span>Lifetime XP</span><strong>${state.analytics.totalXpEarned}</strong></div>
+            <div class="end-widget"><span>Done</span><strong>${state.analytics.totalQuestsDone}</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="card end-module">
+          <div class="section-header"><div class="card-title">Featured Skills</div><button class="btn secondary" data-go="skills">View</button></div>
+          <div class="end-skill-stack">
+            ${top.map(s=>`
+              <div class="end-skill-card">
+                <div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">Lv ${s.level}</div></div></div>
+                <div class="progress"><span style="width:${Math.min(100,Math.round(s.xp/s.xpRequired*100))}%"></span></div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card end-module">
+          <div class="section-header"><div class="card-title">Featured Rewards</div><button class="btn secondary" data-go="rewards">Shop</button></div>
+          <div class="end-reward-column">
+            ${rewards.map(r=>`
+              <div class="end-reward-card">
+                <div class="end-reward-left"><div class="iconbox">${r.icon}</div><div><div class="label">${esc(r.name)}</div><div class="muted">${esc(r.category)}</div></div></div>
+                <div class="chip">🪙 ${r.cost}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <div class="card end-module">
+          <div class="section-header"><div class="card-title">Quick Quest Scan</div><button class="btn secondary" data-go="quests">Quests</button></div>
+          <div class="end-quest-stack">
+            ${activeQuests.length ? activeQuests.map(q=>{
+              const p=qProg(q);
+              return `<div class="end-quest-card">
+                <div class="label">${qIcon(q)} ${esc(q.title)}</div>
+                <div class="muted">${p.current}/${p.target} · 🪙 ${q.rewardCoins}</div>
+              </div>`;
+            }).join("") : `<div class="row"><div class="muted">No active quests.</div></div>`}
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-header"><div class="card-title">Recent Feed</div><button class="btn secondary" data-go="analytics">Stats</button></div>
+        <div class="grid2">
+          <div class="list-stack">
+            ${recent.length ? recent.slice(0,3).map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join("") : `<div class="row"><div class="muted">No activity yet.</div></div>`}
+          </div>
+          <div class="list-stack">
+            ${recent.length ? recent.slice(3,6).map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join("") : `<div class="row"><div class="muted">No more feed.</div></div>`}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return `
+  <div class="card hero">
+    <div class="avatar-card"><div><div class="avatar">${avatar(state.stats.overallLevel)}</div><div class="rank">${rank(state.stats.overallLevel)}</div></div></div>
+    <div>
+      <div class="section-header"><div><div class="card-title">Overworld Merchant Board</div><div class="card-sub">clean village-trader dashboard / card browsing focus</div></div><button class="btn primary" data-form="habit">+ Habit</button></div>
+      <div class="hero-stats">
+        <div class="stat-chip"><div class="value">${state.stats.overallLevel}</div><div class="name">Overall Level</div></div>
+        <div class="stat-chip"><div class="value">${state.wallet.coins}</div><div class="name">Coins</div></div>
+        <div class="stat-chip"><div class="value">${state.stats.habitsCompletedToday}</div><div class="name">Habits Today</div></div>
+        <div class="stat-chip"><div class="value">${active}</div><div class="name">Active Quests</div></div>
+        <div class="stat-chip"><div class="value">${state.stats.xpEarnedToday}</div><div class="name">XP Today</div></div>
+        <div class="stat-chip"><div class="value">${state.stats.rewardsRedeemed}</div><div class="name">Rewards Redeemed</div></div>
+      </div>
+    </div>
+  </div>
+  <div style="height:14px"></div>
+  <div class="grid2">
+    <div class="card merchant-board">
+      <div class="section-header"><div class="card-title">Village Quest Board</div><button class="btn secondary" data-go="quests">Open Quests</button></div>
+      <div class="merchant-quest-list">
+        ${state.quests.filter(q=>!q.completed).slice(0,4).map(q=>{
+          const p=qProg(q);
+          return `<div class="merchant-note">
+            <div class="label">${qIcon(q)} ${esc(q.title)}</div>
+            <div class="muted">${p.current}/${p.target} · 🪙 ${q.rewardCoins}</div>
+          </div>`;
+        }).join("") || `<div class="row"><div class="muted">No active quests.</div></div>`}
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-header"><div class="card-title">Reward Preview</div><button class="btn secondary" data-go="rewards">Open Shop</button></div>
+      <div class="reward-grid">
+        ${rewards.map(r=>`
+          <div class="merchant-reward-card">
+            <div class="reward-plate">${r.icon}</div>
+            <div class="label">${esc(r.name)}</div>
+            <div class="card-sub">${r.category}</div>
+            <div class="label" style="margin-top:8px">🪙 ${r.cost}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  </div>
+  <div style="height:14px"></div>
+  <div class="grid2">
+    <div class="card">
+      <div class="section-header"><div class="card-title">Top Skills</div><button class="btn secondary" data-go="skills">Open Skills</button></div>
+      <div class="merchant-skill-grid">
+        ${top.map(s=>`
+          <div class="merchant-skill-card">
+            <div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">Lv ${s.level}</div></div></div>
+            <div class="progress" style="margin-top:10px"><span style="width:${Math.min(100,Math.round(s.xp/s.xpRequired*100))}%"></span></div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-header"><div class="card-title">Recent Activity</div><button class="btn secondary" data-go="analytics">Analytics</button></div>
+      <div class="list-stack">${recent.length?recent.map(x=>`<div class="row"><div class="label">${esc(x.text)}</div></div>`).join(""):`<div class="row"><div class="muted">No activity yet.</div></div>`}</div>
+    </div>
+  </div>`;
+}
+
+function skills(){
+  const filtered=[...state.skills].sort(sSort).filter(s=>`${s.name} ${s.description} ${state.habits.filter(h=>h.skillId===s.id).map(h=>h.name+" "+h.description).join(" ")}`.toLowerCase().includes(skillSearch.toLowerCase()));
+  const theme=state.settings.theme;
+  if(theme==="nether"){
+    return `<div class="card"><div class="section-header"><div><div class="card-title">Skill Crates</div><div class="card-sub">dense block cards / stack-first layout</div></div><button class="btn primary" data-form="skill">+ Skill</button></div><div class="button-row" style="margin-bottom:12px"><input id="skillSearch" placeholder="Search skills or habits..." value="${esc(skillSearch)}" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><select id="skillSort" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><option value="recent" ${skillSort==="recent"?"selected":""}>Sort: Recent</option><option value="level" ${skillSort==="level"?"selected":""}>Sort: Level</option><option value="name" ${skillSort==="name"?"selected":""}>Sort: Name</option><option value="progress" ${skillSort==="progress"?"selected":""}>Sort: Progress</option></select></div><div class="nether-skill-grid">${filtered.length?filtered.map(s=>`<div class="nether-skill-card-full">${skillCard(s)}</div>`).join(""):`<div class="card"><div class="muted">No matching skills.</div></div>`}</div></div>`;
+  }
+  if(theme==="end"){
+    return `<div class="card"><div class="section-header"><div><div class="card-title">Skill Index</div><div class="card-sub">modular bazaar cards / cleaner separation</div></div><button class="btn primary" data-form="skill">+ Skill</button></div><div class="button-row" style="margin-bottom:12px"><input id="skillSearch" placeholder="Search skills or habits..." value="${esc(skillSearch)}" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:999px;padding:12px 14px"><select id="skillSort" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:999px;padding:12px 14px"><option value="recent" ${skillSort==="recent"?"selected":""}>Sort: Recent</option><option value="level" ${skillSort==="level"?"selected":""}>Sort: Level</option><option value="name" ${skillSort==="name"?"selected":""}>Sort: Name</option><option value="progress" ${skillSort==="progress"?"selected":""}>Sort: Progress</option></select></div><div class="end-skill-index">${filtered.length?filtered.map(s=>`<div class="end-index-card">${skillCard(s)}</div>`).join(""):`<div class="card"><div class="muted">No matching skills.</div></div>`}</div></div>`;
+  }
+  return `<div class="card"><div class="section-header"><div><div class="card-title">Skills</div><div class="card-sub">merchant cards / readable tree browsing</div></div><button class="btn primary" data-form="skill">+ Skill</button></div><div class="button-row" style="margin-bottom:12px"><input id="skillSearch" placeholder="Search skills or habits..." value="${esc(skillSearch)}" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><select id="skillSort" style="flex:1;background:#12161d;color:var(--text);border:1px solid var(--border);border-radius:12px;padding:12px"><option value="recent" ${skillSort==="recent"?"selected":""}>Sort: Recent</option><option value="level" ${skillSort==="level"?"selected":""}>Sort: Level</option><option value="name" ${skillSort==="name"?"selected":""}>Sort: Name</option><option value="progress" ${skillSort==="progress"?"selected":""}>Sort: Progress</option></select></div><div class="merchant-skill-layout">${filtered.length?filtered.map(skillCard).join(""):`<div class="card"><div class="muted">No matching skills.</div></div>`}</div></div>`;
+}
+
+function rewards(){
+  const cats=["All",...new Set(state.rewards.map(r=>r.category))],items=state.rewards.filter(r=>rewardFilter==="All"||r.category===rewardFilter),theme=state.settings.theme;
+  if(theme==="nether"){
+    return `<div class="card"><div class="section-header"><div><div class="card-title">Crate Vendor</div><div class="card-sub">dense grid / faster buy view / loot-panel feel</div></div><button class="btn primary" data-form="reward">+ Reward</button></div><div class="row" style="margin-bottom:12px"><div><div class="label">Wallet</div><div class="muted">Spend coins on mini wins</div></div><div class="label">🪙 ${state.wallet.coins}</div></div><div class="filters" style="margin-bottom:12px">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div><div class="nether-reward-grid">${items.length?items.map(r=>`<div class="nether-crate-card">${rewardCard(r)}</div>`).join(""):`<div class="card"><div class="muted">No rewards in this filter.</div></div>`}</div></div>`;
+  }
+  if(theme==="end"){
+    return `<div class="card"><div class="section-header"><div><div class="card-title">Bazaar Catalog</div><div class="card-sub">premium catalog view / wider reward tiles</div></div><button class="btn primary" data-form="reward">+ Reward</button></div><div class="row" style="margin-bottom:12px"><div><div class="label">Wallet</div><div class="muted">Spend coins on mini wins</div></div><div class="label">🪙 ${state.wallet.coins}</div></div><div class="filters" style="margin-bottom:12px">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div><div class="end-catalog">${items.length?items.map(r=>`<div class="end-catalog-item">${rewardCard(r)}</div>`).join(""):`<div class="card"><div class="muted">No rewards in this filter.</div></div>`}</div></div>`;
+  }
+  return `<div class="card"><div class="section-header"><div><div class="card-title">Reward Shop</div><div class="card-sub">merchant shelf cards / easy browse layout</div></div><button class="btn primary" data-form="reward">+ Reward</button></div><div class="row" style="margin-bottom:12px"><div><div class="label">Wallet</div><div class="muted">Spend coins on mini wins</div></div><div class="label">🪙 ${state.wallet.coins}</div></div><div class="filters" style="margin-bottom:12px">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div><div class="merchant-reward-shelf">${items.length?items.map(r=>`<div class="merchant-shelf-item">${rewardCard(r)}</div>`).join(""):`<div class="card"><div class="muted">No rewards in this filter.</div></div>`}</div></div>`;
+}
+
+function analytics(){
+  const topHabits=[...state.habits].sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5),topNeg=state.habits.filter(h=>h.isNegative).sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5),topSkills=[...state.skills].sort((a,b)=>b.level-a.level||b.xp-a.xp).slice(0,5),theme=state.settings.theme;
+  if(theme==="nether"){
+    return `<div class="nether-analytics"><div class="nether-analytics-bar"><div class="nether-stat"><span>HITS</span><strong>${state.analytics.totalHabitsApplied}</strong></div><div class="nether-stat"><span>GOOD</span><strong>${state.analytics.positiveHits}</strong></div><div class="nether-stat"><span>BAD</span><strong>${state.analytics.negativeHits}</strong></div><div class="nether-stat"><span>GAIN</span><strong>${state.analytics.totalXpEarned}</strong></div><div class="nether-stat"><span>LOSS</span><strong>${state.analytics.totalXpLost}</strong></div><div class="nether-stat"><span>QUESTS</span><strong>${state.analytics.totalQuestsDone}</strong></div></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Top Skills</div></div><div class="list-stack">${topSkills.map(s=>`<div class="nether-skill-line"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">LV ${s.level}</div></div></div><div class="nether-mini-bar"><span style="width:${Math.min(100,Math.round(s.xp/s.xpRequired*100))}%"></span></div></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Damage Report</div></div><div class="list-stack">${topNeg.length?topNeg.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions} hits</strong></div>`).join(""):`<div class="row"><div class="muted">No negative habits tracked.</div></div>`}</div></div></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Top Habits</div></div><div class="list-stack">${topHabits.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions}</strong></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Economy</div></div><div class="list-stack"><div class="row"><span>Current coins</span><strong>${state.wallet.coins}</strong></div><div class="row"><span>Total coins earned</span><strong>${state.wallet.totalCoinsEarned}</strong></div><div class="row"><span>Total coins spent</span><strong>${state.wallet.totalCoinsSpent}</strong></div><div class="row"><span>Rewards redeemed</span><strong>${state.stats.rewardsRedeemed}</strong></div></div></div></div></div>`;
+  }
+  if(theme==="end"){
+    return `<div class="end-analytics-shell"><div class="grid3"><div class="end-widget"><span>Total habits</span><strong>${state.analytics.totalHabitsApplied}</strong></div><div class="end-widget"><span>Positive hits</span><strong>${state.analytics.positiveHits}</strong></div><div class="end-widget"><span>Negative hits</span><strong>${state.analytics.negativeHits}</strong></div><div class="end-widget"><span>Total XP earned</span><strong>${state.analytics.totalXpEarned}</strong></div><div class="end-widget"><span>Total XP lost</span><strong>${state.analytics.totalXpLost}</strong></div><div class="end-widget"><span>Quests done</span><strong>${state.analytics.totalQuestsDone}</strong></div></div><div style="height:14px"></div><div class="grid3"><div class="card end-module"><div class="section-header"><div class="card-title">Top Skills</div></div><div class="end-skill-stack">${topSkills.map(s=>`<div class="end-skill-card"><div class="row-left"><div class="iconbox">${s.icon}</div><div><div class="label">${esc(s.name)}</div><div class="muted">Lv ${s.level}</div></div></div><div class="progress"><span style="width:${Math.min(100,Math.round(s.xp/s.xpRequired*100))}%"></span></div></div>`).join("")}</div></div><div class="card end-module"><div class="section-header"><div class="card-title">Top Habits</div></div><div class="end-quest-stack">${topHabits.map(h=>`<div class="end-quest-card"><div class="label">${h.icon} ${esc(h.name)}</div><div class="muted">${h.totalCompletions} completions</div></div>`).join("")}</div></div><div class="card end-module"><div class="section-header"><div class="card-title">Economy</div></div><div class="end-quest-stack"><div class="end-quest-card"><div class="label">Current coins</div><div class="muted">${state.wallet.coins}</div></div><div class="end-quest-card"><div class="label">Total earned</div><div class="muted">${state.wallet.totalCoinsEarned}</div></div><div class="end-quest-card"><div class="label">Total spent</div><div class="muted">${state.wallet.totalCoinsSpent}</div></div><div class="end-quest-card"><div class="label">Rewards redeemed</div><div class="muted">${state.stats.rewardsRedeemed}</div></div></div></div></div></div>`;
+  }
+  return `<div class="grid3"><div class="stat-card"><div class="muted">Total habits applied</div><div class="stat-big">${state.analytics.totalHabitsApplied}</div></div><div class="stat-card"><div class="muted">Positive hits</div><div class="stat-big">${state.analytics.positiveHits}</div></div><div class="stat-card"><div class="muted">Negative hits</div><div class="stat-big">${state.analytics.negativeHits}</div></div><div class="stat-card"><div class="muted">Total XP earned</div><div class="stat-big">${state.analytics.totalXpEarned}</div></div><div class="stat-card"><div class="muted">Total XP lost</div><div class="stat-big">${state.analytics.totalXpLost}</div></div><div class="stat-card"><div class="muted">Quests completed</div><div class="stat-big">${state.analytics.totalQuestsDone}</div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Top Skills</div></div><div class="list-stack">${topSkills.map(s=>`<div class="row"><span>${s.icon} ${esc(s.name)}</span><strong>Lv ${s.level}</strong></div>`).join("")}</div></div><div class="card"><div class="section-header"><div class="card-title">Top Habits</div></div><div class="list-stack">${topHabits.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions}</strong></div>`).join("")}</div></div></div><div style="height:14px"></div><div class="grid2"><div class="card"><div class="section-header"><div class="card-title">Negative Habit Damage</div></div><div class="list-stack">${topNeg.length?topNeg.map(h=>`<div class="row"><span>${h.icon} ${esc(h.name)}</span><strong>${h.totalCompletions} hits</strong></div>`).join(""):`<div class="row"><div class="muted">No negative habits tracked.</div></div>`}</div></div><div class="card"><div class="section-header"><div class="card-title">Economy</div></div><div class="list-stack"><div class="row"><span>Current coins</span><strong>${state.wallet.coins}</strong></div><div class="row"><span>Total coins earned</span><strong>${state.wallet.totalCoinsEarned}</strong></div><div class="row"><span>Total coins spent</span><strong>${state.wallet.totalCoinsSpent}</strong></div><div class="row"><span>Rewards redeemed</span><strong>${state.stats.rewardsRedeemed}</strong></div></div></div></div>`;
+}
+
 function modal(title,body){$("#modalBackdrop").classList.remove("hidden");$("#modalHost").classList.remove("hidden");$("#modalHost").innerHTML=`<div class="modal"><div class="modal-head"><h3>${title}</h3><button class="close-btn" data-close>×</button></div><div class="modal-body">${body}</div></div>`}
 function closeModal(){$("#modalBackdrop").classList.add("hidden");$("#modalHost").classList.add("hidden");$("#modalHost").innerHTML=""}
 function picker(id,current){return `<div class="picker-trigger" data-open-icon="${id}">Pick Icon <span id="${id}Preview">${current}</span></div><input type="hidden" id="${id}" value="${current}">`}
@@ -63,17 +313,7 @@ function delReward(id){const r=getReward(id);if(!r||!confirm(`Delete reward "${r
 function delQuest(id){const q=state.quests.find(x=>x.id===id);if(!q||!confirm(`Delete quest "${q.title}"?`))return;state.quests=state.quests.filter(x=>x.id!==id);log(`Deleted quest — ${q.title}`);save();closeModal();render()}
 function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="skillforge-save.json";a.click();URL.revokeObjectURL(url)}
 function importSave(file){const r=new FileReader();r.onload=()=>{try{state=JSON.parse(r.result);save();render();toast("Save imported.")}catch(e){toast("Import failed.","bad")}};r.readAsText(file)}
-document.addEventListener("click",e=>{if(e.target.id==="modalBackdrop"){closeModal();return}const b=e.target.closest("button");if(!b)return;if(b.matches(".tab-btn"))setTab(b.dataset.tab);if(b.id==="settingsBtn")openSettings();if(b.id==="levelPill")setTab("analytics");if(b.id==="coinPill")setTab("rewards");if(b.dataset.go)setTab(b.dataset.go);if(b.dataset.theme){applyTheme(b.dataset.theme);render();openSettings()}if(b.dataset.form){if(b.dataset.form==="skill")openSkill();if(b.dataset.form==="habit")openHabit();if(b.dataset.form==="reward")openReward();if(b.dataset.form==="quest")openQuest()}if(b.dataset.toggleSkill){const s=getSkill(b.dataset.toggleSkill);s.expanded=!s.expanded;save();render()}if(b.dataset.addHabitUnder)openHabit(null,b.dataset.addHabitUnder);if(b.dataset.editSkill)openSkill(b.dataset.editSkill);if(b.dataset.editHabit)openHabit(b.dataset.editHabit);if(b.dataset.editReward)openReward(b.dataset.editReward);if(b.dataset.editQuest)openQuest(b.dataset.editQuest);if(b.dataset.hitHabit)hitHabit(b.dataset.hitHabit);if(b.dataset.undoHabit)undoHabit(b.dataset.undoHabit);if(b.dataset.buy)buyReward(b.dataset.buy);if(b.dataset.rewardFilter){rewardFilter=b.dataset.rewardFilter;$("#rewardsTab").innerHTML=rewards()}if(b.dataset.questFilter){questFilter=b.dataset.questFilter;$("#questsTab").innerHTML=quests()}if(b.dataset.saveSkill!==undefined)saveSkill(b.dataset.saveSkill||null);if(b.dataset.saveHabit!==undefined)saveHabit(b.dataset.saveHabit||null);if(b.dataset.saveReward!==undefined)saveReward(b.dataset.saveReward||null);if(b.dataset.saveQuest!==undefined)saveQuest(b.dataset.saveQuest||null);if(b.dataset.delSkill)delSkill(b.dataset.delSkill);if(b.dataset.delHabit)delHabit(b.dataset.delHabit);if(b.dataset.delReward)delReward(b.dataset.delReward);if(b.dataset.delQuest)delQuest(b.dataset.delQuest);if(b.id==="exportSave")exportSave();if(b.id==="resetAll"){if(confirm("Reset everything?")){localStorage.removeItem(KEY);state=seed();render();closeModal()}}if(b.dataset.openIcon){currentIconTarget=b.dataset.openIcon;iconModal()}if(b.dataset.iconCat)renderIconGrid(b.dataset.iconCat);if(b.dataset.pickIcon){if(currentIconTarget){const hidden=document.getElementById(currentIconTarget);if(hidden)hidden.value=b.dataset.pickIcon;const prev=document.getElementById(currentIconTarget+"Preview");if(prev)prev.textContent=b.dataset.pickIcon}closeModal()}if(b.dataset.close!==undefined||b.id==="modalBackdrop")closeModal()})
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.matches(".tab-btn"))setTab(b.dataset.tab);if(b.id==="settingsBtn")openSettings();if(b.id==="levelPill")setTab("analytics");if(b.id==="coinPill")setTab("rewards");if(b.dataset.go)setTab(b.dataset.go);if(b.dataset.theme){applyTheme(b.dataset.theme);render();openSettings()}if(b.dataset.form){if(b.dataset.form==="skill")openSkill();if(b.dataset.form==="habit")openHabit();if(b.dataset.form==="reward")openReward();if(b.dataset.form==="quest")openQuest()}if(b.dataset.toggleSkill){const s=getSkill(b.dataset.toggleSkill);s.expanded=!s.expanded;save();render()}if(b.dataset.addHabitUnder)openHabit(null,b.dataset.addHabitUnder);if(b.dataset.editSkill)openSkill(b.dataset.editSkill);if(b.dataset.editHabit)openHabit(b.dataset.editHabit);if(b.dataset.editReward)openReward(b.dataset.editReward);if(b.dataset.editQuest)openQuest(b.dataset.editQuest);if(b.dataset.hitHabit)hitHabit(b.dataset.hitHabit);if(b.dataset.undoHabit)undoHabit(b.dataset.undoHabit);if(b.dataset.buy)buyReward(b.dataset.buy);if(b.dataset.rewardFilter){rewardFilter=b.dataset.rewardFilter;$("#rewardsTab").innerHTML=rewards()}if(b.dataset.questFilter){questFilter=b.dataset.questFilter;$("#questsTab").innerHTML=quests()}if(b.dataset.saveSkill!==undefined)saveSkill(b.dataset.saveSkill||null);if(b.dataset.saveHabit!==undefined)saveHabit(b.dataset.saveHabit||null);if(b.dataset.saveReward!==undefined)saveReward(b.dataset.saveReward||null);if(b.dataset.saveQuest!==undefined)saveQuest(b.dataset.saveQuest||null);if(b.dataset.delSkill)delSkill(b.dataset.delSkill);if(b.dataset.delHabit)delHabit(b.dataset.delHabit);if(b.dataset.delReward)delReward(b.dataset.delReward);if(b.dataset.delQuest)delQuest(b.dataset.delQuest);if(b.id==="exportSave")exportSave();if(b.id==="resetAll"){if(confirm("Reset everything?")){localStorage.removeItem(KEY);state=seed();render();closeModal()}}if(b.dataset.openIcon){currentIconTarget=b.dataset.openIcon;iconModal()}if(b.dataset.iconCat)renderIconGrid(b.dataset.iconCat);if(b.dataset.pickIcon){if(currentIconTarget){const hidden=document.getElementById(currentIconTarget);if(hidden)hidden.value=b.dataset.pickIcon;const prev=document.getElementById(currentIconTarget+"Preview");if(prev)prev.textContent=b.dataset.pickIcon}closeModal()}if(b.dataset.close!==undefined||b.id==="modalBackdrop")closeModal()})
 document.addEventListener("input",e=>{if(e.target.id==="skillSearch"){skillSearch=e.target.value;$("#skillsTab").innerHTML=skills()}if(e.target.id==="skillSort"){skillSort=e.target.value;$("#skillsTab").innerHTML=skills()}if(e.target.id==="fqt")qVis();if(e.target.id==="importSave"){const file=e.target.files?.[0];if(file)importSave(file)}})
 function render(){save();lvl();applyTheme(state.settings.theme||"overworld");$("#levelPill").textContent=`Lv ${state.stats.overallLevel}`;$("#coinPill").textContent=`🪙 ${state.wallet.coins}`;$("#dashboardTab").innerHTML=dashboard();$("#skillsTab").innerHTML=skills();$("#rewardsTab").innerHTML=rewards();$("#questsTab").innerHTML=quests();$("#analyticsTab").innerHTML=analytics()}
 render(); setTab("dashboard");
-
-
-/* ===== V5.2 mobile polish patch ===== */
-window.addEventListener("resize", () => {
-  // force a tiny rerender so theme layout stays sane on orientation changes
-  clearTimeout(window.__sfResizeTimer);
-  window.__sfResizeTimer = setTimeout(() => {
-    render();
-  }, 80);
-});

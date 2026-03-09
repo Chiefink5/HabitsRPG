@@ -1,7 +1,6 @@
 
 :root{--bg:#101114;--bg2:#171a20;--panel:#181b20;--panel2:#242a34;--panel3:#2d3440;--border:#313949;--text:#eef3ff;--muted:#99a5bf;--accent:#49f29c;--accent2:#ffc64a;--danger:#ff6666;--radius:18px;--shadow:0 14px 32px rgba(0,0,0,.22)}
-*{box-sizing:border-box}
-.hidden{display:none!important}html,body{margin:0;padding:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top,var(--bg2),var(--bg));min-height:100%}
+*{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top,var(--bg2),var(--bg));min-height:100%}
 button,input,select{font:inherit}button{cursor:pointer}
 .topbar{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(13,15,19,.92);backdrop-filter:blur(14px)}
 .brand-wrap{display:flex;gap:12px;align-items:center}.brand-icon{width:46px;height:46px;display:grid;place-items:center;background:linear-gradient(180deg,var(--panel3),var(--panel));border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);font-size:24px}.brand-title{font-weight:900}.brand-sub{font-size:12px;color:var(--muted)}
@@ -27,409 +26,96 @@ button,input,select{font:inherit}button{cursor:pointer}
 /* end */ body.theme-end{--bg:#0d0b14;--bg2:#221c42;--panel:#171525;--panel2:#221d35;--panel3:#2f2850;--border:#5a4d86;--text:#f7f2ff;--muted:#bbb0de;--accent:#8d79ff;--accent2:#69e8ff;--radius:26px} body.theme-end .topbar{border-bottom:none;background:rgba(17,12,28,.82)} body.theme-end .tabs{max-width:260px;position:fixed;left:16px;top:96px;bottom:16px;height:auto;grid-template-columns:1fr;align-content:start;background:rgba(18,15,31,.72);border:1px solid rgba(105,232,255,.1);border-radius:24px;padding:12px} body.theme-end .app-shell{padding-left:300px;max-width:none;margin:0}@media (max-width:980px){body.theme-end .tabs{position:sticky;left:auto;top:76px;bottom:auto;max-width:none;height:auto;grid-template-columns:repeat(5,1fr);border-radius:18px}body.theme-end .app-shell{padding-left:16px}} body.theme-end .tab-btn,body.theme-end .pill,body.theme-end .btn,body.theme-end .small-btn{border-radius:999px} body.theme-end .hero{grid-template-columns:280px 1fr}@media (max-width:980px){body.theme-end .hero{grid-template-columns:1fr}} body.theme-end .reward-grid{grid-template-columns:repeat(3,minmax(0,1fr))} body.theme-end .reward-card,body.theme-end .card,body.theme-end .skill-card,body.theme-end .quest-card,body.theme-end .modal{box-shadow:0 0 0 1px rgba(105,232,255,.08),0 16px 34px rgba(0,0,0,.28)}
 
 
-/* ===== V5.2 mobile cleanup + stronger theme split ===== */
-
-/* General mobile cleanup */
-html, body {
-  overflow-x: hidden;
+/* ===== V6 Theme-specific component templates ===== */
+.merchant-board{background:
+  linear-gradient(180deg, rgba(73,242,156,.035), rgba(255,255,255,.01)),
+  linear-gradient(180deg, rgba(36,42,52,.92), rgba(22,25,32,.98));
+}
+.merchant-quest-list{display:grid;gap:10px}
+.merchant-note{
+  padding:12px 14px;border-radius:16px;border:1px dashed rgba(255,255,255,.12);
+  background:linear-gradient(180deg, rgba(73,242,156,.04), rgba(255,255,255,.01));
+}
+.merchant-skill-grid,.merchant-reward-shelf,.merchant-skill-layout{
+  display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.merchant-skill-card,.merchant-reward-card,.merchant-shelf-item{
+  background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:16px;padding:12px;
+}
+@media (max-width:860px){
+  .merchant-skill-grid,.merchant-reward-shelf,.merchant-skill-layout{grid-template-columns:1fr}
 }
 
-button, input, select {
-  -webkit-tap-highlight-color: transparent;
-}
-
-.app-shell {
-  padding-bottom: 110px;
-}
-
-.row,
-.section-header,
-.button-row,
-.filters {
-  min-width: 0;
-}
-
-.label,
-.muted,
-.card-sub {
-  word-break: break-word;
-}
-
-.reward-card,
-.skill-card,
-.quest-card,
-.card,
-.stat-card,
-.habit-item {
-  min-width: 0;
-}
-
-@media (max-width: 980px) {
-  .topbar {
-    padding: 12px;
-    gap: 10px;
-  }
-
-  .brand-wrap {
-    gap: 10px;
-    min-width: 0;
-    flex: 1;
-  }
-
-  .brand-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-    flex: 0 0 auto;
-  }
-
-  .brand-title {
-    font-size: 15px;
-    line-height: 1.1;
-  }
-
-  .brand-sub {
-    font-size: 11px;
-    line-height: 1.1;
-  }
-
-  .topbar-right {
-    gap: 6px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    max-width: 48%;
-  }
-
-  .pill {
-    padding: 9px 10px;
-    font-size: 13px;
-  }
-
-  .tabs {
-    gap: 6px;
-    padding: 8px 10px;
-  }
-
-  .tab-btn {
-    padding: 11px 6px;
-    font-size: 12px;
-    line-height: 1.1;
-  }
-
-  .app-shell {
-    padding: 12px;
-  }
-
-  .card,
-  .skill-card,
-  .reward-card,
-  .quest-card,
-  .stat-card {
-    padding: 12px;
-  }
-
-  .section-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .section-header > .button-row,
-  .section-header > .btn,
-  .section-header > button {
-    width: 100%;
-  }
-
-  .button-row > .btn,
-  .button-row > .small-btn,
-  .filters > .filter-pill {
-    flex: 1 1 auto;
-    justify-content: center;
-  }
-
-  .hero {
-    gap: 12px;
-  }
-
-  .avatar-card {
-    min-height: 150px;
-  }
-
-  .avatar {
-    font-size: 64px;
-  }
-
-  .hero-stats {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .value {
-    font-size: 20px;
-  }
-
-  .name {
-    font-size: 11px;
-  }
-
-  .row {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 10px 11px;
-  }
-
-  .row-left {
-    width: 100%;
-  }
-
-  .reward-plate {
-    min-height: 74px;
-    font-size: 36px;
-  }
-
-  .modal {
-    width: min(96vw, 620px);
-    max-height: 90vh;
-    border-radius: 18px;
-  }
-
-  .modal-head,
-  .modal-body {
-    padding: 14px;
-  }
-
-  .theme-grid {
-    gap: 8px;
-  }
-
-  .theme-card {
-    padding: 12px;
-  }
-
-  .icon-grid {
-    grid-template-columns: repeat(4, minmax(0,1fr));
-    gap: 8px;
-  }
-
-  .icon-btn {
-    min-height: 48px;
-    font-size: 22px;
-  }
-}
-
-@media (max-width: 640px) {
-  .topbar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .topbar-right {
-    width: 100%;
-    max-width: none;
-    justify-content: stretch;
-  }
-
-  .topbar-right > * {
-    flex: 1 1 calc(33.333% - 6px);
-    text-align: center;
-  }
-
-  .tabs {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .hero-stats,
-  .grid2,
-  .grid3,
-  .grid4,
-  .reward-grid,
-  .skill-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-  .card-title {
-    font-size: 16px;
-  }
-
-  .card-sub,
-  .muted {
-    font-size: 11px;
-  }
-
-  .btn,
-  .small-btn,
-  .filter-pill {
-    width: 100%;
-  }
-
-  .reward-card .button-row,
-  .skill-card .button-row,
-  .quest-card .button-row {
-    width: 100%;
-  }
-
-  .reward-card .button-row > *,
-  .skill-card .button-row > *,
-  .quest-card .button-row > * {
-    width: 100%;
-  }
-
-  body.theme-end .app-shell {
-    padding-left: 12px !important;
-  }
-
-  body.theme-end .tabs {
-    position: sticky !important;
-    left: auto !important;
-    top: 118px !important;
-    bottom: auto !important;
-    max-width: none !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    border-radius: 18px !important;
-  }
-}
-
-/* Stronger theme identity */
-
-/* Overworld = soft trader board */
-body.theme-overworld .topbar {
-  background: linear-gradient(180deg, rgba(23,31,27,.92), rgba(12,15,18,.94));
-}
-
-body.theme-overworld .card,
-body.theme-overworld .skill-card,
-body.theme-overworld .reward-card,
-body.theme-overworld .quest-card {
-  box-shadow: 0 12px 28px rgba(0,0,0,.22), inset 0 0 0 1px rgba(73,242,156,.05);
-}
-
-body.theme-overworld .reward-card {
+.nether-shell{display:grid;gap:14px}
+.nether-banner{
+  border-radius:10px!important;
   background:
-    linear-gradient(180deg, rgba(73,242,156,.04), rgba(255,255,255,.01)),
-    linear-gradient(180deg, rgba(36,42,52,.92), rgba(22,25,32,.98));
+    linear-gradient(180deg, rgba(255,122,89,.1), rgba(255,255,255,.01)),
+    linear-gradient(180deg, #4f211a, #210f0d);
+}
+.nether-banner-grid{display:grid;grid-template-columns:180px 1fr;gap:14px;align-items:center}
+.nether-stat-wall{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.nether-stat{
+  border:1px solid rgba(255,122,89,.22);border-radius:8px;padding:10px 12px;
+  background:linear-gradient(180deg, rgba(255,122,89,.08), rgba(255,255,255,.01));
+}
+.nether-stat span{display:block;font-size:11px;color:var(--muted);letter-spacing:.08em}
+.nether-stat strong{display:block;font-size:22px;margin-top:4px}
+.nether-reward-strip,.nether-reward-grid,.nether-skill-grid{
+  display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))
+}
+.nether-reward-box,.nether-crate-card,.nether-skill-card-full{
+  border:1px solid rgba(255,122,89,.18);border-radius:8px;padding:12px;
+  background:linear-gradient(180deg, rgba(255,122,89,.08), rgba(255,255,255,.01));
+}
+.nether-reward-icon{
+  min-height:72px;border-radius:8px;display:grid;place-items:center;font-size:36px;
+  background:linear-gradient(180deg,#5d2c22,#2a1511);margin-bottom:10px;border:1px solid rgba(255,191,87,.16);
+}
+.nether-quest-line,.nether-skill-line{
+  border:1px solid rgba(255,122,89,.16);border-radius:8px;padding:10px 12px;background:rgba(255,122,89,.05)
+}
+.nether-mini-bar{height:8px;background:#220f0d;border-radius:999px;overflow:hidden;margin-top:8px}
+.nether-mini-bar span{display:block;height:100%;background:linear-gradient(90deg,#ffbf57,#ff7a59)}
+.nether-analytics{display:grid;gap:14px}
+.nether-analytics-bar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media (max-width:1100px){
+  .nether-reward-strip,.nether-reward-grid,.nether-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nether-stat-wall,.nether-analytics-bar{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:860px){
+  .nether-banner-grid{grid-template-columns:1fr}
+  .nether-reward-strip,.nether-reward-grid,.nether-skill-grid,.nether-stat-wall,.nether-analytics-bar{grid-template-columns:1fr}
 }
 
-body.theme-overworld .reward-plate,
-body.theme-overworld .avatar-card {
-  background:
-    linear-gradient(180deg, rgba(73,242,156,.08), rgba(255,255,255,.01)),
-    linear-gradient(180deg, var(--panel3), var(--panel));
-}
-
-/* Nether = dense crate vendor */
-body.theme-nether .topbar {
-  background: linear-gradient(180deg, rgba(57,18,13,.98), rgba(18,12,12,.98));
-  border-bottom: 1px solid rgba(255,122,89,.18);
-}
-
-body.theme-nether .brand-icon {
-  border-radius: 8px;
-  background: linear-gradient(180deg, #6a2b1f, #2a120f);
-}
-
-body.theme-nether .tabs {
-  border-bottom: 1px solid rgba(255,122,89,.18);
-}
-
-body.theme-nether .tab-btn.active {
-  box-shadow: inset 0 -3px 0 rgba(255,191,87,.9);
-  color: #fff1e8;
-}
-
-body.theme-nether .card-title,
-body.theme-nether .label {
-  letter-spacing: .04em;
-}
-
-body.theme-nether .reward-grid {
-  gap: 10px;
-}
-
-body.theme-nether .reward-card {
-  border: 1px solid rgba(255,122,89,.2);
-  background:
-    linear-gradient(180deg, rgba(255,122,89,.08), rgba(255,255,255,.01)),
-    linear-gradient(180deg, #55251d, #2b1410);
-}
-
-body.theme-nether .skill-card,
-body.theme-nether .quest-card,
-body.theme-nether .card {
-  border: 1px solid rgba(255,122,89,.18);
-}
-
-body.theme-nether .row,
-body.theme-nether .habit-item,
-body.theme-nether .stat-chip {
-  border-radius: 8px;
-}
-
-body.theme-nether .btn.primary,
-body.theme-nether .small-btn.primary {
-  text-transform: uppercase;
-  letter-spacing: .05em;
-}
-
-body.theme-nether .reward-plate {
-  border-radius: 8px;
-  border: 1px solid rgba(255,191,87,.16);
-  box-shadow: inset 0 0 0 1px rgba(255,122,89,.08);
-}
-
-body.theme-nether .avatar-card {
-  border-radius: 8px;
-  background: linear-gradient(180deg, #5a271d, #25110f);
-}
-
-/* End = floating bazaar terminal */
-body.theme-end .topbar {
-  background: linear-gradient(180deg, rgba(23,18,38,.86), rgba(10,8,18,.88));
-  box-shadow: 0 16px 36px rgba(0,0,0,.3);
-}
-
-body.theme-end .brand-icon {
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)),
-    linear-gradient(180deg, #352b5c, #1a1430);
-  box-shadow: 0 0 0 1px rgba(105,232,255,.1), 0 14px 26px rgba(0,0,0,.28);
-}
-
-body.theme-end .tabs {
-  box-shadow: 0 0 0 1px rgba(105,232,255,.09), 0 20px 34px rgba(0,0,0,.28);
-}
-
-body.theme-end .tab-btn {
-  background: rgba(255,255,255,.03);
-}
-
-body.theme-end .card,
-body.theme-end .skill-card,
-body.theme-end .reward-card,
-body.theme-end .quest-card,
-body.theme-end .stat-card {
+.end-shell{display:grid;gap:14px}
+.end-hero-grid{display:grid;grid-template-columns:260px 1fr;gap:14px}
+.end-command{
   background:
     linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)),
     linear-gradient(180deg, rgba(37,30,66,.95), rgba(18,15,31,.99));
-  box-shadow: 0 0 0 1px rgba(105,232,255,.09), 0 20px 36px rgba(0,0,0,.28);
 }
-
-body.theme-end .reward-plate,
-body.theme-end .avatar-card {
-  background:
-    linear-gradient(180deg, rgba(105,232,255,.06), rgba(255,255,255,.01)),
-    linear-gradient(180deg, #352b5c, #1a1430);
+.end-widget-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px
 }
-
-body.theme-end .row,
-body.theme-end .habit-item,
-body.theme-end .stat-chip {
-  background: rgba(141,121,255,.05);
-  border-color: rgba(105,232,255,.08);
+.end-widget{
+  border-radius:20px;padding:14px;border:1px solid rgba(105,232,255,.1);
+  background:linear-gradient(180deg, rgba(141,121,255,.08), rgba(255,255,255,.01));
 }
-
-body.theme-end .card-title {
-  letter-spacing: .01em;
+.end-widget span{display:block;font-size:11px;color:var(--muted)}
+.end-widget strong{display:block;font-size:24px;margin-top:6px}
+.end-module{border-radius:28px!important}
+.end-skill-stack,.end-reward-column,.end-quest-stack{display:grid;gap:10px}
+.end-skill-card,.end-reward-card,.end-quest-card{
+  border-radius:20px;padding:12px 14px;border:1px solid rgba(105,232,255,.08);
+  background:rgba(141,121,255,.05)
 }
-
-body.theme-end .reward-grid {
-  gap: 16px;
+.end-reward-left{display:flex;gap:10px;align-items:center}
+.end-catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.end-catalog-item,.end-index-card{min-width:0}
+.end-skill-index{display:grid;grid-template-columns:1fr;gap:14px}
+.end-analytics-shell{display:grid;gap:14px}
+@media (max-width:980px){
+  .end-hero-grid{grid-template-columns:1fr}
+  .end-widget-grid,.end-catalog{grid-template-columns:1fr}
 }
