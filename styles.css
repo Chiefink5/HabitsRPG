@@ -1,3 +1,4 @@
+.hidden{display:none!important}
 
 :root{--bg:#101114;--bg2:#171a20;--panel:#181b20;--panel2:#242a34;--panel3:#2d3440;--border:#313949;--text:#eef3ff;--muted:#99a5bf;--accent:#49f29c;--accent2:#ffc64a;--danger:#ff6666;--radius:18px;--shadow:0 14px 32px rgba(0,0,0,.22)}
 *{box-sizing:border-box}html,body{margin:0;padding:0;font-family:Inter,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at top,var(--bg2),var(--bg));min-height:100%}
@@ -120,7 +121,27 @@ button,input,select{font:inherit}button{cursor:pointer}
   .end-widget-grid,.end-catalog{grid-template-columns:1fr}
 }
 
-/* --- Modal Blur Fix --- */
-.modal-backdrop{pointer-events:auto}
-.modal-backdrop.hidden{display:none!important;pointer-events:none!important}
-body:not(.modal-open) .modal-backdrop{display:none!important;pointer-events:none!important}
+
+/* ===== V6.2 modal hard fix ===== */
+.modal-backdrop.hidden,
+.modal-host.hidden{
+  display:none !important;
+  pointer-events:none !important;
+}
+.modal-backdrop{
+  pointer-events:auto;
+}
+.modal-host{
+  pointer-events:none;
+}
+.modal-host .modal{
+  pointer-events:auto;
+}
+body:not(.modal-open) .modal-backdrop,
+body:not(.modal-open) .modal-host{
+  display:none !important;
+  pointer-events:none !important;
+}
+body.modal-open{
+  overflow:hidden;
+}
