@@ -327,3 +327,24 @@ document.addEventListener("click",e=>{if(e.target.id==="modalBackdrop"){closeMod
 document.addEventListener("input",e=>{if(e.target.id==="skillSearch"){skillSearch=e.target.value;$("#skillsTab").innerHTML=skills()}if(e.target.id==="skillSort"){skillSort=e.target.value;$("#skillsTab").innerHTML=skills()}if(e.target.id==="fqt")qVis();if(e.target.id==="importSave"){const file=e.target.files?.[0];if(file)importSave(file)}})
 function render(){save();lvl();applyTheme(state.settings.theme||"overworld");$("#levelPill").textContent=`Lv ${state.stats.overallLevel}`;$("#coinPill").textContent=`🪙 ${state.wallet.coins}`;$("#dashboardTab").innerHTML=dashboard();$("#skillsTab").innerHTML=skills();$("#rewardsTab").innerHTML=rewards();$("#questsTab").innerHTML=quests();$("#analyticsTab").innerHTML=analytics()}
 render(); setTab("dashboard");
+
+
+/* ===== V6.3 keep active tab visible ===== */
+function scrollActiveTabIntoView(){
+  const active = document.querySelector('.tabs .tab-btn.active');
+  if(active){
+    active.scrollIntoView({behavior:'smooth', inline:'center', block:'nearest'});
+  }
+}
+
+const __origSetTab = setTab;
+setTab = function(tab){
+  __origSetTab(tab);
+  setTimeout(scrollActiveTabIntoView, 30);
+};
+
+const __origRender = render;
+render = function(){
+  __origRender();
+  setTimeout(scrollActiveTabIntoView, 30);
+};

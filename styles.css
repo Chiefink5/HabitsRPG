@@ -145,3 +145,127 @@ body:not(.modal-open) .modal-host{
 body.modal-open{
   overflow:hidden;
 }
+
+
+/* ===== V6.3 mobile tab scroll fix ===== */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden !important;
+}
+
+.topbar,
+.app-shell,
+.card,
+.skill-card,
+.reward-card,
+.quest-card,
+.stat-card,
+.hero,
+.grid2,
+.grid3,
+.grid4,
+.reward-grid,
+.skill-grid,
+.end-shell,
+.nether-shell,
+.end-hero-grid,
+.nether-banner-grid,
+.end-widget-grid {
+  min-width: 0;
+}
+
+.tabs {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+.tabs .tab-btn {
+  flex: 0 0 auto;
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  .tabs {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .tabs .tab-btn {
+    min-width: 110px;
+  }
+
+  body.theme-end .tabs {
+    position: sticky !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    top: 76px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    grid-template-columns: none !important;
+    border-radius: 18px !important;
+  }
+
+  body.theme-end .app-shell {
+    padding-left: 12px !important;
+    margin: 0 auto !important;
+    max-width: 1320px !important;
+  }
+
+  body.theme-end .end-hero-grid,
+  body.theme-end .grid2,
+  body.theme-end .grid3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    overflow-x: hidden;
+  }
+
+  .topbar-right {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .tabs {
+    border-radius: 16px;
+  }
+
+  .tabs .tab-btn {
+    min-width: 104px;
+    font-size: 13px;
+  }
+
+  .app-shell {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  body.theme-nether .reward-grid,
+  body.theme-overworld .reward-grid,
+  body.theme-end .reward-grid,
+  .merchant-skill-grid,
+  .merchant-reward-shelf,
+  .merchant-skill-layout,
+  .nether-reward-strip,
+  .nether-reward-grid,
+  .nether-skill-grid,
+  .end-catalog,
+  .end-skill-index,
+  .end-widget-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
