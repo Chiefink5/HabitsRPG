@@ -260,9 +260,38 @@ $("#importInput").addEventListener("change",e=>{const file=e.target.files?.[0]; 
 render(); setActiveTab("dashboard");
 
 
+
+/* ===== V4.1 theme persistence patch ===== */
 state.settings ||= { theme: "overworld" };
-function applyTheme(theme){const nextTheme=theme||"overworld";document.body.classList.remove("theme-overworld","theme-nether","theme-end");document.body.classList.add(`theme-${nextTheme}`);state.settings ||= {};state.settings.theme=nextTheme;saveState();[{id:"themeOverworldBtn",key:"overworld"},{id:"themeNetherBtn",key:"nether"},{id:"themeEndBtn",key:"end"}].forEach(card=>{const el=document.getElementById(card.id);if(el)el.classList.toggle("active",card.key===nextTheme);});}
-const __oldRenderAnalytics=renderAnalytics;renderAnalytics=function(){const topHabits=[...state.habits].sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5);const topNegative=state.habits.filter(h=>h.isNegative).sort((a,b)=>b.totalCompletions-a.totalCompletions).slice(0,5);const topSkills=[...state.skills].sort((a,b)=>b.level-a.level||b.xp-a.xp).slice(0,5);document.getElementById("analyticsTab").innerHTML=`<div class="grid-3"><div class="analytics-stat"><div class="analytics-label">Total habits applied</div><div class="analytics-value">${state.analytics.totalHabitsApplied}</div></div><div class="analytics-stat"><div class="analytics-label">Positive hits</div><div class="analytics-value">${state.analytics.positiveHits}</div></div><div class="analytics-stat"><div class="analytics-label">Negative hits</div><div class="analytics-value">${state.analytics.negativeHits}</div></div><div class="analytics-stat"><div class="analytics-label">Total XP earned</div><div class="analytics-value">${state.analytics.totalXpEarned}</div></div><div class="analytics-stat"><div class="analytics-label">Total XP lost</div><div class="analytics-value">${state.analytics.totalXpLost}</div></div><div class="analytics-stat"><div class="analytics-label">Quests completed</div><div class="analytics-value">${state.analytics.totalQuestsDone}</div></div></div><div style="height:14px"></div><div class="grid-2"><div class="panel"><div class="panel-header"><h3>Top Skills</h3><div class="muted">Highest progression</div></div><div class="list-stack">${topSkills.length?topSkills.map(s=>`<div class="mini-row"><span>${s.icon} ${escapeHtml(s.name)}</span><strong>Lv ${s.level}</strong></div>`).join(""):`<div class="empty-state">No skills.</div>`}</div></div><div class="panel"><div class="panel-header"><h3>Top Habits</h3><div class="muted">Most used</div></div><div class="list-stack">${topHabits.length?topHabits.map(h=>`<div class="mini-row"><span>${h.icon} ${escapeHtml(h.name)}</span><strong>${h.totalCompletions}</strong></div>`).join(""):`<div class="empty-state">No habits.</div>`}</div></div></div><div style="height:14px"></div><div class="grid-2"><div class="panel"><div class="panel-header"><h3>Negative Habit Damage</h3><div class="muted">Worst offenders</div></div><div class="list-stack">${topNegative.length?topNegative.map(h=>`<div class="mini-row"><span>${h.icon} ${escapeHtml(h.name)}</span><strong>${h.totalCompletions} hits</strong></div>`).join(""):`<div class="empty-state">No negative habits tracked.</div>`}</div></div><div class="panel"><div class="panel-header"><h3>Economy</h3><div class="muted">Shop totals</div></div><div class="list-stack"><div class="mini-row"><span>Current coins</span><strong>${state.wallet.coins}</strong></div><div class="mini-row"><span>Total coins earned</span><strong>${state.wallet.totalCoinsEarned}</strong></div><div class="mini-row"><span>Total coins spent</span><strong>${state.wallet.totalCoinsSpent}</strong></div><div class="mini-row"><span>Rewards redeemed</span><strong>${state.stats.rewardsRedeemed}</strong></div></div></div></div>`;}
-document.addEventListener("click",e=>{const btn=e.target.closest("[data-theme-choice]");if(!btn)return;applyTheme(btn.dataset.themeChoice);});
-const __oldRender=render;render=function(){__oldRender();applyTheme((state.settings&&state.settings.theme)||"overworld");};
-applyTheme((state.settings&&state.settings.theme)||"overworld");
+
+function applyTheme(themeName){
+  const selected = themeName || "overworld";
+  document.body.classList.remove("theme-overworld","theme-nether","theme-end");
+  document.body.classList.add(`theme-${selected}`);
+  state.settings ||= {};
+  state.settings.theme = selected;
+  saveState();
+
+  [
+    ["themeOverworldBtn","overworld"],
+    ["themeNetherBtn","nether"],
+    ["themeEndBtn","end"]
+  ].forEach(([id,key]) => {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle("active", key === selected);
+  });
+}
+
+const _renderBase = render;
+render = function(){
+  _renderBase();
+  applyTheme((state.settings && state.settings.theme) || "overworld");
+};
+
+document.addEventListener("click", e => {
+  const themed = e.target.closest("[data-theme-choice]");
+  if(!themed) return;
+  applyTheme(themed.dataset.themeChoice);
+});
+
+applyTheme((state.settings && state.settings.theme) || "overworld");
