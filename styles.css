@@ -119,3 +119,8 @@ button,input,select{font:inherit}button{cursor:pointer}
   .end-hero-grid{grid-template-columns:1fr}
   .end-widget-grid,.end-catalog{grid-template-columns:1fr}
 }
+
+/* --- Modal Blur Fix --- */
+.modal-backdrop{pointer-events:auto}
+.modal-backdrop.hidden{display:none!important;pointer-events:none!important}
+body:not(.modal-open) .modal-backdrop{display:none!important;pointer-events:none!important}
