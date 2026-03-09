@@ -26,3 +26,29 @@
 .toast-stack{position:fixed;right:16px;bottom:90px;display:grid;gap:10px;z-index:40}.toast{min-width:220px;max-width:300px;padding:12px 14px;border-radius:16px;background:linear-gradient(180deg,#2c3342,#1d2230);border:1px solid var(--border);box-shadow:var(--shadow);animation:toastIn .22s ease}.toast.good{box-shadow:inset 0 0 0 1px rgba(70,241,154,.3),var(--shadow)}.toast.bad{box-shadow:inset 0 0 0 1px rgba(255,102,102,.35),var(--shadow)}@keyframes toastIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 .float-layer{position:fixed;inset:0;pointer-events:none;z-index:35}.floating-text{position:fixed;font-weight:900;font-size:18px;text-shadow:0 2px 8px rgba(0,0,0,.45);animation:floatUp .9s ease forwards}.floating-good{color:var(--emerald)}.floating-bad{color:var(--red)}.floating-gold{color:var(--gold)}@keyframes floatUp{0%{opacity:0;transform:translate(-50%,0) scale(.94)}10%{opacity:1}100%{opacity:0;transform:translate(-50%,-52px) scale(1.05)}}
 .empty-state{border:1px dashed rgba(255,255,255,.14);border-radius:16px;padding:18px;text-align:center;color:var(--muted)}.import-label input{display:none}
+
+
+/* V4 UI polish + theme system */
+:root{--accent:#46f19a;--accent2:#ffc64a;--surface-grad:linear-gradient(180deg,rgba(36,42,52,.92),rgba(22,25,32,.98));--surface-grad-2:linear-gradient(180deg,#282f3a,#181c24);--backdrop:radial-gradient(circle at top,#171a20 0,var(--bg) 48%);--tab-count:5;}
+body{background:var(--backdrop);transition:background .2s ease,color .2s ease}
+.topbar,.tabs,.panel,.skill-card,.reward-card,.quest-card,.modal,.character-box,.skill-icon,.reward-icon-box,.quick-add,.mini-row,.stat-card,.habit-card,.theme-card{transition:background .2s ease,border-color .2s ease,box-shadow .2s ease,color .2s ease,transform .15s ease;}
+.tabs{grid-template-columns:repeat(var(--tab-count),1fr)}
+.panel{background:var(--surface-grad)}
+.skill-card{background:linear-gradient(180deg,color-mix(in srgb, var(--panel2) 85%, white 3%), color-mix(in srgb, var(--panel) 92%, black 4%))}
+.reward-card{background:var(--surface-grad-2)}
+.topbar .pill{font-weight:800}.tab-btn.active{box-shadow:inset 0 -3px 0 var(--accent)}.tab-btn:hover,.filter-pill:hover,.secondary-btn:hover,.ghost-btn:hover,.edit-icon-btn:hover,.theme-card:hover{transform:translateY(-1px)}
+.primary-btn,.plus-btn{background:linear-gradient(180deg,color-mix(in srgb, var(--accent) 88%, white 10%), color-mix(in srgb, var(--accent) 82%, black 18%))}
+.coin-pill{color:#2b1b00;background:linear-gradient(180deg,color-mix(in srgb, var(--accent2) 72%, white 20%), color-mix(in srgb, var(--accent2) 78%, black 14%))}
+.add-pill{background:linear-gradient(180deg,color-mix(in srgb, var(--accent) 85%, white 15%), color-mix(in srgb, var(--accent) 82%, black 20%))}
+.progress-inner{background:linear-gradient(90deg,color-mix(in srgb, var(--accent2) 82%, white 8%), color-mix(in srgb, var(--accent2) 85%, black 16%))}
+.tree::before{background:linear-gradient(180deg,color-mix(in srgb, var(--accent) 55%, white 10%), color-mix(in srgb, var(--purple) 45%, transparent 55%))}
+.habit-card::before{background:color-mix(in srgb, var(--accent) 62%, white 10%)}
+.level-pill{background:color-mix(in srgb, var(--accent2) 14%, transparent);color:var(--accent2);border-color:color-mix(in srgb, var(--accent2) 35%, transparent)}
+.filter-pill.active{box-shadow:inset 0 0 0 1px color-mix(in srgb, var(--accent) 60%, transparent);background:color-mix(in srgb, var(--accent) 11%, #1e2c27)}
+.settings-block{display:grid;gap:10px}.settings-title{font-size:14px;font-weight:800;letter-spacing:.02em}.theme-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media (max-width:900px){.theme-grid{grid-template-columns:1fr}}
+.theme-card{border:1px solid var(--border);border-radius:16px;padding:14px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));text-align:left;color:var(--text)}
+.theme-card-title{font-weight:900;margin-bottom:4px}.theme-card-sub{font-size:12px;color:var(--muted)}.theme-card.active{background:linear-gradient(180deg,color-mix(in srgb, var(--accent) 14%, white 1%),rgba(255,255,255,.02));border-color:color-mix(in srgb, var(--accent) 55%, var(--border))}
+.analytics-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.05);border-radius:14px;padding:14px}.analytics-label{font-size:12px;color:var(--muted)}.analytics-value{font-size:24px;font-weight:900;margin-top:6px}
+body.theme-overworld{--accent:#46f19a;--accent2:#ffc64a;--purple:#9f79ff;--surface-grad:linear-gradient(180deg,rgba(36,42,52,.92),rgba(22,25,32,.98));--surface-grad-2:linear-gradient(180deg,#282f3a,#181c24);--backdrop:radial-gradient(circle at top,#171a20 0,var(--bg) 48%)}
+body.theme-nether{--bg:#140d0d;--panel:#241414;--panel2:#362020;--border:#5b3434;--text:#fff2ef;--muted:#d4aaaa;--accent:#ff7d6b;--accent2:#ffc45e;--purple:#d06161;--surface-grad:linear-gradient(180deg,rgba(74,29,29,.94),rgba(31,14,14,.98));--surface-grad-2:linear-gradient(180deg,#4a2222,#251111);--backdrop:radial-gradient(circle at top,#3c1212 0,#140d0d 52%)}
+body.theme-end{--bg:#0d0c14;--panel:#171524;--panel2:#221d35;--border:#51467f;--text:#f6f2ff;--muted:#b6aed9;--accent:#7b6dff;--accent2:#69e8ff;--purple:#b58dff;--surface-grad:linear-gradient(180deg,rgba(40,31,72,.92),rgba(16,14,28,.98));--surface-grad-2:linear-gradient(180deg,#2e2550,#171329);--backdrop:radial-gradient(circle at top,#241b42 0,#0d0c14 54%)}

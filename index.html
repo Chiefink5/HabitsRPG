@@ -137,6 +137,24 @@
   <div class="modal hidden" id="settingsModal">
     <div class="modal-head"><h3>Settings</h3><button class="close-btn" data-close-modal>&times;</button></div>
     <div class="modal-body">
+      <div class="settings-block">
+        <div class="settings-title">Theme Template</div>
+        <div class="muted">Switch between different Minecraft-style store layouts and color schemes.</div>
+        <div class="theme-grid">
+          <button class="theme-card" id="themeNetherBtn" data-theme-choice="nether" type="button">
+            <div class="theme-card-title">Nether Crate</div>
+            <div class="theme-card-sub">Dark red, gold, molten shop vibe</div>
+          </button>
+          <button class="theme-card" id="themeEndBtn" data-theme-choice="end" type="button">
+            <div class="theme-card-title">End Bazaar</div>
+            <div class="theme-card-sub">Void purple, bright cyan highlights</div>
+          </button>
+          <button class="theme-card" id="themeOverworldBtn" data-theme-choice="overworld" type="button">
+            <div class="theme-card-title">Overworld Merchant</div>
+            <div class="theme-card-sub">Emerald, stone, clean village stall vibe</div>
+          </button>
+        </div>
+      </div>
       <button class="secondary-btn full-btn" id="exportBtn">Export Save</button>
       <label class="import-label full-btn">Import Save<input type="file" id="importInput" accept=".json,application/json" /></label>
       <button class="danger-btn full-btn" id="resetBtn">Reset Everything</button>
