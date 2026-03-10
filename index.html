@@ -1,43 +1,148 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SkillForge V5</title>
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillForge V3 Fixed</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body class="theme-overworld">
-<div id="toastStack" class="toast-stack"></div>
-<div id="modalBackdrop" class="modal-backdrop hidden"></div>
-<div id="modalHost" class="modal-host hidden"></div>
+<body>
+  <div id="toastStack" class="toast-stack"></div>
+  <div id="floatLayer" class="float-layer"></div>
 
-<header class="topbar">
-  <div class="brand-wrap">
-    <div class="brand-icon">⛏</div>
-    <div><div class="brand-title">SkillForge V5</div><div class="brand-sub">drastic theme layouts</div></div>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-icon">⛏</div>
+      <div>
+        <div class="brand-title">SkillForge V3</div>
+        <div class="brand-sub">analytics patch without nuking the app</div>
+      </div>
+    </div>
+    <div class="topbar-stats">
+      <button class="pill" id="overallLevelBtn" type="button">Lv 1</button>
+      <button class="pill coin-pill" id="walletBtn" type="button">🪙 0</button>
+      <button class="pill add-pill" id="quickAddBtn" type="button">＋ Add</button>
+      <button class="pill" id="settingsBtn" type="button">⚙</button>
+    </div>
+  </header>
+
+  <div class="quick-add hidden" id="quickAddMenu">
+    <button data-open-modal="skillModal">Add Skill</button>
+    <button data-open-modal="habitModal">Add Habit</button>
+    <button data-open-modal="rewardModal">Add Reward</button>
+    <button data-open-modal="questModal">Add Quest</button>
   </div>
-  <div class="topbar-right">
-    <button class="pill" id="levelPill">Lv 1</button>
-    <button class="pill coin" id="coinPill">🪙 0</button>
-    <button class="pill action" id="settingsBtn">Settings</button>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
+    <button class="tab-btn" data-tab="skills">Skills</button>
+    <button class="tab-btn" data-tab="rewards">Rewards</button>
+    <button class="tab-btn" data-tab="quests">Quests</button>
+    <button class="tab-btn" data-tab="analytics">Analytics</button>
+  </nav>
+
+  <main class="app-shell">
+    <section class="tab-panel active" id="dashboardTab"></section>
+    <section class="tab-panel" id="skillsTab"></section>
+    <section class="tab-panel" id="rewardsTab"></section>
+    <section class="tab-panel" id="questsTab"></section>
+    <section class="tab-panel" id="analyticsTab"></section>
+  </main>
+
+  <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+
+  <div class="modal hidden" id="skillModal">
+    <div class="modal-head"><h3 id="skillModalTitle">Add Skill</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <form id="skillForm" class="modal-body">
+      <input type="hidden" id="skillId" />
+      <label>Name<input id="skillName" required maxlength="40" placeholder="Guitar" /></label>
+      <label>Base XP Goal<input id="skillBaseXp" type="number" min="10" value="50" required /></label>
+      <label>Description<input id="skillDescription" maxlength="80" placeholder="Optional" /></label>
+      <div class="field-label">Icon</div>
+      <div class="picker-trigger" data-picker-target="skillIcon">Pick Icon <span id="skillIconPreview">🎸</span></div>
+      <input type="hidden" id="skillIcon" value="🎸" />
+      <div class="modal-actions">
+        <button type="submit" class="primary-btn">Save Skill</button>
+        <button type="button" class="danger-btn hidden" id="deleteSkillBtn">Delete</button>
+      </div>
+    </form>
   </div>
-</header>
 
-<nav class="tabs">
-  <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
-  <button class="tab-btn" data-tab="skills">Skills</button>
-  <button class="tab-btn" data-tab="rewards">Rewards</button>
-  <button class="tab-btn" data-tab="quests">Quests</button>
-  <button class="tab-btn" data-tab="analytics">Analytics</button>
-</nav>
+  <div class="modal hidden" id="habitModal">
+    <div class="modal-head"><h3 id="habitModalTitle">Add Habit</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <form id="habitForm" class="modal-body">
+      <input type="hidden" id="habitId" />
+      <label>Name<input id="habitName" required maxlength="40" placeholder="Practice bends" /></label>
+      <label>Parent Skill<select id="habitSkillId" required></select></label>
+      <label>XP Value<input id="habitXpReward" type="number" min="1" value="10" required /></label>
+      <label>Coin Value<input id="habitCoinReward" type="number" min="0" value="2" required /></label>
+      <label>Daily Cap<input id="habitDailyCap" type="number" min="1" value="1" required /></label>
+      <label>Description<input id="habitDescription" maxlength="80" placeholder="Optional" /></label>
+      <label class="toggle-row"><span>Negative Habit</span><input id="habitNegative" type="checkbox" /></label>
+      <div class="tiny-note">Negative habits hit XP and coins at 1.5x the listed value.</div>
+      <div class="field-label">Icon</div>
+      <div class="picker-trigger" data-picker-target="habitIcon">Pick Icon <span id="habitIconPreview">🔥</span></div>
+      <input type="hidden" id="habitIcon" value="🔥" />
+      <div class="modal-actions">
+        <button type="submit" class="primary-btn">Save Habit</button>
+        <button type="button" class="danger-btn hidden" id="deleteHabitBtn">Delete</button>
+      </div>
+    </form>
+  </div>
 
-<main class="app-shell">
-  <section id="dashboardTab" class="tab-panel active"></section>
-  <section id="skillsTab" class="tab-panel"></section>
-  <section id="rewardsTab" class="tab-panel"></section>
-  <section id="questsTab" class="tab-panel"></section>
-  <section id="analyticsTab" class="tab-panel"></section>
-</main>
-<script src="script.js"></script>
+  <div class="modal hidden" id="rewardModal">
+    <div class="modal-head"><h3 id="rewardModalTitle">Add Reward</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <form id="rewardForm" class="modal-body">
+      <input type="hidden" id="rewardId" />
+      <label>Title<input id="rewardName" required maxlength="40" placeholder="1 Hour Gaming" /></label>
+      <label>Cost<input id="rewardCost" type="number" min="1" value="25" required /></label>
+      <label>Category<select id="rewardCategory"><option>Fun</option><option>Food</option><option>Rest</option><option>Purchase</option><option>Custom</option></select></label>
+      <label>Note<input id="rewardNote" maxlength="80" placeholder="Optional" /></label>
+      <label class="toggle-row"><span>Repeatable</span><input id="rewardRepeatable" type="checkbox" checked /></label>
+      <div class="field-label">Icon</div>
+      <div class="picker-trigger" data-picker-target="rewardIcon">Pick Icon <span id="rewardIconPreview">🎮</span></div>
+      <input type="hidden" id="rewardIcon" value="🎮" />
+      <div class="modal-actions">
+        <button type="submit" class="primary-btn">Save Reward</button>
+        <button type="button" class="danger-btn hidden" id="deleteRewardBtn">Delete</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal hidden" id="questModal">
+    <div class="modal-head"><h3 id="questModalTitle">Add Quest</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <form id="questForm" class="modal-body">
+      <input type="hidden" id="questId" />
+      <label>Quest Type<select id="questType"><option value="habit_count">Habit Count</option><option value="skill_level">Skill Level</option><option value="streak_goal">Streak Goal</option><option value="coin_goal">Coin Goal</option></select></label>
+      <div id="questTargetHabitWrap"><label>Target Habit<select id="questTargetHabit"></select></label></div>
+      <div id="questTargetSkillWrap" class="hidden"><label>Target Skill<select id="questTargetSkill"></select></label></div>
+      <label>Target Value<input id="questTargetValue" type="number" min="1" value="5" required /></label>
+      <label>Reward Coins<input id="questRewardCoins" type="number" min="1" value="20" required /></label>
+      <label>Custom Title<input id="questTitle" maxlength="60" placeholder="Optional auto-title if blank" /></label>
+      <div class="modal-actions">
+        <button type="submit" class="primary-btn">Save Quest</button>
+        <button type="button" class="danger-btn hidden" id="deleteQuestBtn">Delete</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal hidden icon-modal" id="iconPickerModal">
+    <div class="modal-head"><h3>Pick Icon</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <div class="modal-body">
+      <div class="icon-filters" id="iconFilterBar"></div>
+      <div class="icon-grid" id="iconGrid"></div>
+    </div>
+  </div>
+
+  <div class="modal hidden" id="settingsModal">
+    <div class="modal-head"><h3>Settings</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <div class="modal-body">
+      <button class="secondary-btn full-btn" id="exportBtn">Export Save</button>
+      <label class="import-label full-btn">Import Save<input type="file" id="importInput" accept=".json,application/json" /></label>
+      <button class="danger-btn full-btn" id="resetBtn">Reset Everything</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
