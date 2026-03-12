@@ -1,5 +1,5 @@
 
-const STORAGE_KEY="skillforge_v8_quest_store_pack";
+const STORAGE_KEY="skillforge_v8_1_quest_store_fixed";
 const ICON_SETS={All:["⛏","🪓","🗡","🛡","🧱","💎","🪙","⚒️","💪","💧","🧠","🏃","😴","🧘","❤️","🎸","🎵","🎤","🎨","✍️","💼","📚","🧾","🖥️","🔥","🍔","🧃","🍕","🍜","☕","🍫","🎮","🎬","🎲","🚀","👑","⭐","⚡","🌀","🔒","✅","🎯","📈","🏠","🧼","🧹","🌙","🥤","📦","💰"],Tools:["⛏","🪓","🗡","🛡","🧱","💎","🪙","⚒️","📦"],Health:["💪","💧","🧠","🏃","😴","🧘","❤️","🧼"],Music:["🎸","🎵","🎤","🎨","✍️"],Work:["💼","📚","🧾","🖥️","📈","🏠","🧹"],Food:["🍔","🧃","🍕","🍜","☕","🍫","🥤"],Fun:["🎮","🎬","🎲","🚀","👑","⭐","⚡","🌀"]};
 const $=s=>document.querySelector(s),$$=s=>Array.from(document.querySelectorAll(s));
 let currentIconTarget=null,audioCtx=null,rewardFilter="All",questFilter="Active",searchValue="",sortValue="recent";
@@ -8,35 +8,34 @@ const xpRequiredForLevel=(b,l)=>Math.round(b*Math.pow(1.5,Math.max(0,l-1)));
 
 
 function defaultState(){
-  const now = nowIso();
   return {
-    meta:{lastOpenedDate:todayStr(),questPackSource:"external-pending"},
+    meta:{lastOpenedDate:todayStr(), questPackSource:"external-pending"},
     wallet:{coins:18,totalCoinsEarned:18,totalCoinsSpent:0},
     stats:{overallLevel:1,habitsCompletedToday:0,xpEarnedToday:0,coinsEarnedToday:0,rewardsRedeemed:0},
     analytics:{positiveHits:0,negativeHits:0,totalXpEarned:0,totalXpLost:0,totalHabitsApplied:0,totalQuestsDone:0},
     permissions:[],
     earnedRewards:[],
     skills:[
-      {id:"skill_guitar",name:"Guitar",icon:"🎸",description:"Keep the fingers honest",level:1,xp:0,baseXp:50,xpRequired:50,expanded:true,createdAt:now,lastUsedAt:now},
-      {id:"skill_fitness",name:"Fitness",icon:"💪",description:"Body grind",level:1,xp:0,baseXp:50,xpRequired:50,expanded:true,createdAt:now,lastUsedAt:now},
-      {id:"skill_learning",name:"Learning",icon:"🧠",description:"Level the brain",level:1,xp:0,baseXp:50,xpRequired:50,expanded:false,createdAt:now,lastUsedAt:now}
+      {id:"skill_guitar",name:"Guitar",icon:"🎸",description:"Keep the fingers honest",level:1,xp:0,baseXp:50,xpRequired:50,expanded:true,createdAt:nowIso(),lastUsedAt:nowIso()},
+      {id:"skill_fitness",name:"Fitness",icon:"💪",description:"Body grind",level:1,xp:0,baseXp:50,xpRequired:50,expanded:true,createdAt:nowIso(),lastUsedAt:nowIso()},
+      {id:"skill_learning",name:"Learning",icon:"🧠",description:"Level the brain",level:1,xp:0,baseXp:50,xpRequired:50,expanded:false,createdAt:nowIso(),lastUsedAt:nowIso()}
     ],
     habits:[
-      {id:"habit_bends",skillId:"skill_guitar",name:"Practice Bends",icon:"🔥",description:"Accuracy and pitch",xpReward:15,coinReward:3,dailyCap:3,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:now},
-      {id:"habit_warmups",skillId:"skill_guitar",name:"Warmups",icon:"🎯",description:"Loosen up",xpReward:10,coinReward:2,dailyCap:2,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:now},
-      {id:"habit_water",skillId:"skill_fitness",name:"Drink Water",icon:"💧",description:"Hydrate",xpReward:8,coinReward:1,dailyCap:5,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:now},
-      {id:"habit_reading",skillId:"skill_learning",name:"Read 10 Pages",icon:"📚",description:"Just read the damn thing",xpReward:12,coinReward:2,dailyCap:2,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:now},
-      {id:"habit_doomscroll",skillId:"skill_learning",name:"Doom Scroll",icon:"🌀",description:"Negative habit example",xpReward:8,coinReward:1,dailyCap:4,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:true,createdAt:now}
+      {id:"habit_bends",skillId:"skill_guitar",name:"Practice Bends",icon:"🔥",description:"Accuracy and pitch",xpReward:15,coinReward:3,dailyCap:3,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:nowIso()},
+      {id:"habit_warmups",skillId:"skill_guitar",name:"Warmups",icon:"🎯",description:"Loosen up",xpReward:10,coinReward:2,dailyCap:2,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:nowIso()},
+      {id:"habit_water",skillId:"skill_fitness",name:"Drink Water",icon:"💧",description:"Hydrate",xpReward:8,coinReward:1,dailyCap:5,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:nowIso()},
+      {id:"habit_reading",skillId:"skill_learning",name:"Read 10 Pages",icon:"📚",description:"Just read the damn thing",xpReward:12,coinReward:2,dailyCap:2,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:false,createdAt:nowIso()},
+      {id:"habit_doomscroll",skillId:"skill_learning",name:"Doom Scroll",icon:"🌀",description:"Negative habit example",xpReward:8,coinReward:1,dailyCap:4,timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null,streakEnabled:true,isNegative:true,createdAt:nowIso()}
     ],
     rewards:[
-      {id:"store_game_hour",name:"1 Hour Gaming",icon:"🎮",category:"Fun",type:"time",cost:30,repeatable:true,grantPermission:"",note:"One guilt-free hour",createdAt:now},
-      {id:"store_deepwork_unlock",name:"Deep Work Quest Unlock",icon:"🗝️",category:"Custom",type:"permission",cost:40,repeatable:false,grantPermission:"unlock.deepwork",note:"Lets you start deep work quests",createdAt:now},
-      {id:"store_movie_night",name:"Movie Night",icon:"🎬",category:"Rest",type:"time",cost:45,repeatable:true,grantPermission:"",note:"Kick back",createdAt:now}
+      {id:"store_game_hour",name:"1 Hour Gaming",icon:"🎮",category:"Fun",type:"time",cost:30,repeatable:true,grantPermission:"",note:"One guilt-free hour",createdAt:nowIso()},
+      {id:"store_deepwork_unlock",name:"Deep Work Quest Unlock",icon:"🗝️",category:"Custom",type:"permission",cost:40,repeatable:false,grantPermission:"unlock.deepwork",note:"Lets you start deep work quests",createdAt:nowIso()},
+      {id:"store_movie_night",name:"Movie Night",icon:"🎬",category:"Rest",type:"time",cost:45,repeatable:true,grantPermission:"",note:"Kick back",createdAt:nowIso()}
     ],
     quests:[
-      {id:"quest_hydration",type:"habit_count",title:"Complete Drink Water 7 times",targetId:"habit_water",targetValue:7,timeLimitHours:0,prerequisiteQuestId:"",requiredPermission:"",rewardCoins:20,rewardTitle:"Hydration Badge",rewardIcon:"💧",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:now},
-      {id:"quest_guitar2",type:"skill_level",title:"Reach Guitar level 2",targetId:"skill_guitar",targetValue:2,timeLimitHours:0,prerequisiteQuestId:"quest_hydration",requiredPermission:"",rewardCoins:25,rewardTitle:"String Slinger",rewardIcon:"🎸",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:now},
-      {id:"quest_deepwork",type:"habit_count",title:"Complete Read 10 Pages 5 times",targetId:"habit_reading",targetValue:5,timeLimitHours:48,prerequisiteQuestId:"quest_guitar2",requiredPermission:"unlock.deepwork",rewardCoins:45,rewardTitle:"Deep Work Badge",rewardIcon:"🏆",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:now}
+      {id:"quest_hydration",type:"habit_count",title:"Complete Drink Water 7 times",targetId:"habit_water",targetValue:7,timeLimitHours:0,prerequisiteQuestId:"",requiredPermission:"",rewardCoins:20,rewardTitle:"Hydration Badge",rewardIcon:"💧",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:nowIso()},
+      {id:"quest_guitar2",type:"skill_level",title:"Reach Guitar level 2",targetId:"skill_guitar",targetValue:2,timeLimitHours:0,prerequisiteQuestId:"quest_hydration",requiredPermission:"",rewardCoins:25,rewardTitle:"String Slinger",rewardIcon:"🎸",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:nowIso()},
+      {id:"quest_deepwork",type:"habit_count",title:"Complete Read 10 Pages 5 times",targetId:"habit_reading",targetValue:5,timeLimitHours:48,prerequisiteQuestId:"quest_guitar2",requiredPermission:"unlock.deepwork",rewardCoins:45,rewardTitle:"Deep Work Badge",rewardIcon:"🏆",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:nowIso()}
     ],
     activityLog:[]
   };
@@ -44,7 +43,7 @@ function defaultState(){
 let state=loadState();
 
 
-function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);const parsed=raw?JSON.parse(raw):defaultState();ensureShape(parsed);ensureV8Shape(parsed);dailyReset(parsed);return parsed}catch(e){return defaultState()}}
+function loadState(){try{const raw=localStorage.getItem(STORAGE_KEY);const parsed=raw?JSON.parse(raw):defaultState();ensureShape(parsed);dailyReset(parsed);return parsed}catch(e){return defaultState()}}
 function ensureShape(d){
   d.analytics ||= {positiveHits:0,negativeHits:0,totalXpEarned:0,totalXpLost:0,totalHabitsApplied:0,totalQuestsDone:0};
   d.meta ||= {lastOpenedDate:todayStr()}; d.wallet ||= {coins:0,totalCoinsEarned:0,totalCoinsSpent:0}; d.stats ||= {overallLevel:1,habitsCompletedToday:0,xpEarnedToday:0,coinsEarnedToday:0,rewardsRedeemed:0};
@@ -52,26 +51,6 @@ function ensureShape(d){
   d.skills.forEach(s=>{s.baseXp ||= 50; s.level ||= 1; s.xp ||= 0; s.xpRequired ||= xpRequiredForLevel(s.baseXp,s.level); if(s.expanded===undefined)s.expanded=false; s.lastUsedAt ||= s.createdAt || nowIso()});
   d.habits.forEach(h=>{h.description||="";h.timesCompletedToday||=0;h.totalCompletions||=0;h.streak||=0;h.bestStreak||=0;if(h.streakEnabled===undefined)h.streakEnabled=true;if(h.isNegative===undefined)h.isNegative=false});
 }
-
-function ensureV8Shape(d){
-  d.meta ||= {};
-  if(!d.meta.questPackSource) d.meta.questPackSource = "external-pending";
-  d.permissions ||= [];
-  d.earnedRewards ||= [];
-  d.rewards ||= [];
-  d.quests ||= [];
-  d.rewards.forEach(r=>{ r.type ||= "custom"; r.grantPermission ||= ""; });
-  d.quests.forEach(q=>{
-    q.timeLimitHours ||= 0;
-    q.prerequisiteQuestId ||= "";
-    q.requiredPermission ||= "";
-    q.rewardTitle ||= "";
-    q.rewardIcon ||= "🏆";
-    if(q.startedAt===undefined) q.startedAt = null;
-    if(q.expiresAt===undefined) q.expiresAt = null;
-  });
-}
-
 function dailyReset(d){const t=todayStr();if(d.meta.lastOpenedDate!==t){d.habits.forEach(h=>h.timesCompletedToday=0);d.stats.habitsCompletedToday=0;d.stats.xpEarnedToday=0;d.stats.coinsEarnedToday=0;d.meta.lastOpenedDate=t;saveState()}}
 function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}
 const getSkill=id=>state.skills.find(s=>s.id===id), getHabit=id=>state.habits.find(h=>h.id===id), getReward=id=>state.rewards.find(r=>r.id===id);
@@ -134,41 +113,23 @@ function renderHabitCard(h){
   return `<div class="habit-card"><div class="habit-top"><div class="habit-title"><div class="skill-icon" style="width:40px;height:40px;font-size:20px">${h.icon}</div><div><strong>${escapeHtml(h.name)}</strong><div class="muted">${escapeHtml(h.description||"No description")}</div></div></div><div class="item-actions"><button class="edit-icon-btn" data-edit-habit="${h.id}">✏️</button></div></div><div class="habit-meta"><span class="tag">${h.isNegative?`-${Math.ceil(h.xpReward*1.5)} XP`:`+${h.xpReward} XP`}</span><span class="tag">${h.isNegative?`-${Math.ceil(h.coinReward*1.5)} Coins`:`+${h.coinReward} Coins`}</span><span class="tag">Today ${h.timesCompletedToday}/${h.dailyCap}</span><span class="tag">Streak ${streak}</span>${h.isNegative?`<span class="tag tag-negative">Negative Habit</span>`:""}</div><div class="habit-bottom"><div class="muted">${skill?skill.icon+" "+escapeHtml(skill.name):""}</div><div class="action-cluster"><button class="minus-btn" data-undo-habit="${h.id}">−</button><button class="plus-btn" data-hit-habit="${h.id}">${h.isNegative?"!":"+"}</button></div></div></div>`;
 }
 
-
 function renderRewards(){
   const filtered=state.rewards.filter(r=>rewardFilter==="All"||r.category===rewardFilter),cats=["All",...new Set(state.rewards.map(r=>r.category))];
-  const earned = state.earnedRewards.slice(0,9);
-  $("#rewardsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Store</h3><div class="muted">Rewards are earned. Store buys fun time, unlocks, and utility.</div></div><button class="primary-btn" data-open-modal="rewardModal">+ Store Item</button></div><div class="store-subgrid"><div class="mini-row"><div><strong>Wallet</strong><div class="muted">Spend coins on store items</div></div><div class="reward-price">🪙 ${state.wallet.coins}</div></div><div class="mini-row"><div><strong>Permissions</strong><div class="muted">Quest unlocks bought in store</div></div><div class="permission-row">${state.permissions.length?state.permissions.map(p=>`<span class="permission-chip">${escapeHtml(p)}</span>`).join(""):'<span class="muted">None yet</span>'}</div></div></div><div class="panel-header" style="margin-top:10px"><div><h4>Earned Rewards</h4><div class="muted">Quest and level rewards</div></div></div>${earned.length?`<div class="inventory-grid-lite">${earned.map(item=>`<div class="inventory-item"><div class="reward-icon-box">${item.icon||"🏆"}</div><strong>${escapeHtml(item.name)}</strong><div class="muted" style="margin-top:4px">${escapeHtml(item.source||"Reward")}</div></div>`).join("")}</div>`:`<div class="empty-state">No earned rewards yet.</div>`}<div class="panel-header" style="margin-top:16px"><div><h4>Store Items</h4><div class="muted">Buy access, time, and utility</div></div></div><div class="filters">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div>${filtered.length?`<div class="inventory-grid">${filtered.map(renderRewardCard).join("")}</div>`:`<div class="empty-state">No store items in this filter.</div>`}</div>`;
+  $("#rewardsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Reward Shop</h3><div class="muted">Inventory-style layout preserved</div></div><button class="primary-btn" data-open-modal="rewardModal">+ Reward</button></div><div class="mini-row" style="margin-bottom:12px"><div><strong>Wallet</strong><div class="muted">Spend coins on mini wins</div></div><div class="reward-price">🪙 ${state.wallet.coins}</div></div><div class="filters">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div>${filtered.length?`<div class="inventory-grid">${filtered.map(renderRewardCard).join("")}</div>`:`<div class="empty-state">No rewards in this filter.</div>`}</div>`;
 }
-
-
 function renderRewardCard(r){
   const aff=state.wallet.coins>=r.cost;
-  const permLine = r.grantPermission ? `<div class="muted" style="margin-top:4px">Unlocks <code>${escapeHtml(r.grantPermission)}</code></div>` : "";
-  return `<div class="reward-card ${!aff?"reward-disabled":""}"><div class="reward-icon-box">${r.icon}</div><strong>${escapeHtml(r.name)}</strong><div class="muted" style="margin-top:4px">${escapeHtml(r.category)} · ${escapeHtml(r.type||"custom")}</div>${permLine}<div class="muted" style="margin-top:4px; min-height:36px">${escapeHtml(r.note||"No note")}</div><div class="panel-header" style="margin-top:10px;margin-bottom:0"><span class="reward-price">🪙 ${r.cost}</span><span class="tag">${r.repeatable?"Repeatable":"One-time"}</span></div><div class="item-actions" style="margin-top:10px"><button class="primary-btn" ${aff?"":"disabled"} data-buy-reward="${r.id}">Buy</button><button class="secondary-btn" data-edit-reward="${r.id}">Edit</button></div></div>`;
+  return `<div class="reward-card ${!aff?"reward-disabled":""}"><div class="reward-icon-box">${r.icon}</div><strong>${escapeHtml(r.name)}</strong><div class="muted" style="margin-top:4px">${escapeHtml(r.category)}</div><div class="muted" style="margin-top:4px; min-height:36px">${escapeHtml(r.note||"No note")}</div><div class="panel-header" style="margin-top:10px;margin-bottom:0"><span class="reward-price">🪙 ${r.cost}</span><span class="tag">${r.repeatable?"Repeatable":"One-time"}</span></div><div class="item-actions" style="margin-top:10px"><button class="primary-btn" ${aff?"":"disabled"} data-buy-reward="${r.id}">Redeem</button><button class="secondary-btn" data-edit-reward="${r.id}">Edit</button></div></div>`;
 }
-
-
 
 function renderQuests(){
-  const quests=state.quests.filter(q=>{
-    if(questFilter==="All") return true;
-    if(questFilter==="Completed") return q.completed;
-    return !q.completed;
-  });
-  $("#questsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Quests</h3><div class="muted">Start timers, prerequisites, and permission locks.</div></div><button class="primary-btn" data-open-modal="questModal">+ Quest</button></div><div class="filters">${["Active","Completed","All"].map(type=>`<button class="filter-pill ${questFilter===type?"active":""}" data-quest-filter="${type}">${type}</button>`).join("")}</div><div class="list-stack">${quests.length?quests.map(renderQuestCard).join(""):`<div class="empty-state">No quests in this view.</div>`}</div></div>`;
+  const quests=state.quests.filter(q=>questFilter==="All"?true:questFilter==="Completed"?q.completed:!q.completed);
+  $("#questsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Quests</h3><div class="muted">Auto-complete and auto-pay when done</div></div><button class="primary-btn" data-open-modal="questModal">+ Quest</button></div><div class="filters">${["Active","Completed","All"].map(type=>`<button class="filter-pill ${questFilter===type?"active":""}" data-quest-filter="${type}">${type}</button>`).join("")}</div><div class="list-stack">${quests.length?quests.map(renderQuestCard).join(""):`<div class="empty-state">No quests in this view.</div>`}</div></div>`;
 }
-
-
 function renderQuestCard(q){
-  const p=getQuestProgress(q),pct=Math.min(100,Math.round(p.current/Math.max(1,p.target)*100));
-  const status=getQuestStatus(q);
-  const prereqLine=q.prerequisiteQuestId?`<div class="muted">Requires: ${escapeHtml(getQuestName(q.prerequisiteQuestId))}</div>`:"";
-  const permLine=q.requiredPermission?`<div class="muted">Permission: <code>${escapeHtml(q.requiredPermission)}</code></div>`:"";
-  const timerLine=q.timeLimitHours>0?`<div class="muted">Timer: ${q.timeLimitHours}h${q.startedAt?` · ${escapeHtml(getTimeRemainingLabel(q))}`:" after start"}</div>`:"";
-  return `<div class="quest-card ${q.completed?"quest-complete":""}"><div class="panel-header"><div><strong>${questIcon(q)} ${escapeHtml(q.title)}</strong><div class="muted">${questTypeLabel(q.type)}</div></div><div class="item-actions">${getQuestStatusChip(q)}<button class="secondary-btn" data-edit-quest="${q.id}">Edit</button></div></div><div class="progress"><div class="progress-inner" style="width:${pct}%"></div></div><div class="quest-progress"><span>${p.current}/${p.target}</span><span>Reward 🪙 ${q.rewardCoins}</span></div><div class="quest-meta">${q.rewardTitle?`<div class="quest-reward-line">Earned reward: ${escapeHtml(q.rewardIcon||"🏆")} ${escapeHtml(q.rewardTitle)}</div>`:""}${timerLine}${prereqLine}${permLine}</div><div class="quest-actions">${status==="ready"?`<button class="primary-btn" data-start-quest="${q.id}">Start Quest</button>`:""}${status==="locked"?`<button class="secondary-btn" disabled>Locked</button>`:""}${status==="active"?`<button class="secondary-btn" disabled>In Progress</button>`:""}${status==="expired"?`<button class="danger-btn" data-restart-quest="${q.id}">Restart Quest</button>`:""}</div>${q.completed?`<div class="tiny-note" style="margin-top:8px">Completed ${new Date(q.completedAt).toLocaleDateString()}</div>`:""}</div>`;
+  const p=getQuestProgress(q),pct=Math.min(100,Math.round(p.current/p.target*100));
+  return `<div class="quest-card ${q.completed?"quest-complete":""}"><div class="panel-header"><div><strong>${questIcon(q)} ${escapeHtml(q.title)}</strong><div class="muted">${questTypeLabel(q.type)}</div></div><div class="item-actions"><button class="secondary-btn" data-edit-quest="${q.id}">Edit</button></div></div><div class="progress"><div class="progress-inner" style="width:${pct}%"></div></div><div class="quest-progress"><span>${p.current}/${p.target}</span><span>Reward 🪙 ${q.rewardCoins}</span></div>${q.completed?`<div class="tiny-note" style="margin-top:8px">Completed ${new Date(q.completedAt).toLocaleDateString()}</div>`:""}</div>`;
 }
-
 const questTypeLabel=t=>({habit_count:"Habit Count",skill_level:"Skill Level",streak_goal:"Streak Goal",coin_goal:"Coin Goal"})[t]||t, questIcon=q=>({habit_count:"📜",skill_level:"⭐",streak_goal:"🔥",coin_goal:"🪙"})[q.type]||"📜";
 
 function renderAnalytics(){
@@ -199,7 +160,6 @@ function renderAnalytics(){
   </div>`;
 }
 
-
 function getQuestProgress(q){
   if(q.type==="habit_count"){const h=getHabit(q.targetId);return{current:h?h.totalCompletions:0,target:q.targetValue}}
   if(q.type==="skill_level"){const s=getSkill(q.targetId);return{current:s?s.level:0,target:q.targetValue}}
@@ -207,28 +167,19 @@ function getQuestProgress(q){
   if(q.type==="coin_goal")return{current:state.wallet.totalCoinsEarned,target:q.targetValue}
   return{current:0,target:q.targetValue||1}
 }
-
-
 function checkQuestCompletion(){
   let any=false;
   state.quests.forEach(q=>{
-    if(getQuestStatus(q)==="expired"){ any=true; return; }
-    if(q.completed || !q.startedAt) return;
+    if(q.completed)return;
     const p=getQuestProgress(q);
     if(p.current>=p.target){
-      q.completed=true; q.completedAt=nowIso();
-      state.wallet.coins+=q.rewardCoins; state.wallet.totalCoinsEarned+=q.rewardCoins;
+      q.completed=true;q.completedAt=nowIso();state.wallet.coins+=q.rewardCoins;state.wallet.totalCoinsEarned+=q.rewardCoins;
       state.analytics.totalQuestsDone++;
-      if(q.rewardTitle) addEarnedReward(q.rewardTitle, q.rewardIcon, q.title);
-      addLog(`Quest complete — ${q.title} (+${q.rewardCoins} coins)`);
-      showToast(`Quest complete<br><strong>${escapeHtml(q.title)}</strong><br>+${q.rewardCoins} coins`,"good");
-      playQuestSound();
-      any=true;
+      addLog(`Quest complete — ${q.title} (+${q.rewardCoins} coins)`);showToast(`Quest complete<br><strong>${escapeHtml(q.title)}</strong><br>+${q.rewardCoins} coins`,"good");playQuestSound();any=true;
     }
   });
-  if(any) saveState();
+  if(any)saveState();
 }
-
 function applyHabit(id,btn){
   const h=getHabit(id); if(!h)return; const s=getSkill(h.skillId); if(!s)return;
   if(h.timesCompletedToday>=h.dailyCap){showToast(`Cap reached for <strong>${escapeHtml(h.name)}</strong>`,"bad");playClickBad();spawnFloatingText(btn,"CAP","bad");return}
@@ -246,7 +197,7 @@ function applyHabit(id,btn){
     state.analytics.positiveHits++; state.analytics.totalXpEarned += xp;
     addLog(`+${xp} XP / +${coin} coins — ${h.name}`); showToast(`+${xp} XP / +${coin} coins<br><strong>${escapeHtml(h.name)}</strong>`,"good"); playClickGood(); spawnFloatingText(btn,`+${xp} XP`,"good"); spawnFloatingText(btn,`+${coin} 🪙`,"gold");
   }
-  while(s.xp>=s.xpRequired){ s.xp-=s.xpRequired; s.level++; s.xpRequired=xpRequiredForLevel(s.baseXp,s.level); addEarnedReward(`${s.name} Lv ${s.level}`, s.icon, "Level Up"); addLog(`Level up — ${s.name} Lv ${s.level}`); showToast(`Level up!<br><strong>${escapeHtml(s.name)}</strong> is now Lv ${s.level}`,"good"); playLevelUpSound() }
+  while(s.xp>=s.xpRequired){ s.xp-=s.xpRequired; s.level++; s.xpRequired=xpRequiredForLevel(s.baseXp,s.level); addLog(`Level up — ${s.name} Lv ${s.level}`); showToast(`Level up!<br><strong>${escapeHtml(s.name)}</strong> is now Lv ${s.level}`,"good"); playLevelUpSound() }
   recomputeOverallLevel(); checkQuestCompletion(); saveState(); render();
 }
 function undoHabit(id,btn){
@@ -258,34 +209,121 @@ function undoHabit(id,btn){
   else{ s.xp=Math.max(0,s.xp-xp); state.wallet.coins=Math.max(0,state.wallet.coins-coin); state.stats.habitsCompletedToday=Math.max(0,state.stats.habitsCompletedToday-1); state.stats.xpEarnedToday=Math.max(0,state.stats.xpEarnedToday-xp); state.stats.coinsEarnedToday=Math.max(0,state.stats.coinsEarnedToday-coin); state.analytics.positiveHits=Math.max(0,state.analytics.positiveHits-1); state.analytics.totalXpEarned=Math.max(0,state.analytics.totalXpEarned-xp); addLog(`Undo habit — ${h.name}`); spawnFloatingText(btn,`-${xp} XP`,"bad")}
   state.analytics.totalHabitsApplied=Math.max(0,state.analytics.totalHabitsApplied-1); playClickGood(); saveState(); render();
 }
-
 function buyReward(id){
-  const r=getReward(id); if(!r) return;
+  const r=getReward(id); if(!r)return;
   if(state.wallet.coins<r.cost){showToast(`Need ${r.cost-state.wallet.coins} more coins for <strong>${escapeHtml(r.name)}</strong>`,"bad");playClickBad();return}
-  if(r.grantPermission && state.permissions.includes(r.grantPermission) && !r.repeatable){showToast(`Already unlocked.<br><strong>${escapeHtml(r.name)}</strong>`,"bad");return}
   state.wallet.coins-=r.cost; state.wallet.totalCoinsSpent+=r.cost; state.stats.rewardsRedeemed++;
-  if(r.grantPermission && !state.permissions.includes(r.grantPermission)) state.permissions.push(r.grantPermission);
-  addLog(`Bought store item — ${r.name} (-${r.cost} coins)`);
-  showToast(`Bought<br><strong>${escapeHtml(r.name)}</strong><br>-${r.cost} coins`,"good");
-  playQuestSound();
+  addLog(`Redeemed reward — ${r.name} (-${r.cost} coins)`); showToast(`Redeemed<br><strong>${escapeHtml(r.name)}</strong><br>-${r.cost} coins`,"good"); playQuestSound();
   if(!r.repeatable) state.rewards=state.rewards.filter(x=>x.id!==id);
   saveState(); render();
 }
 
-
-
 function populateSelects(){
-  const skillOpts=state.skills.map(s=>`<option value="${s.id}">${escapeHtml(s.icon)} ${escapeHtml(s.name)}</option>`).join("");
-  $("#habitSkillId").innerHTML=skillOpts||""; $("#questTargetSkill").innerHTML=skillOpts||"";
-  const habitOpts=state.habits.map(h=>`<option value="${h.id}">${escapeHtml(h.icon)} ${escapeHtml(h.name)}</option>`).join("");
-  $("#questTargetHabit").innerHTML=habitOpts||"";
-  refreshQuestPrerequisiteOptions($("#questId")?.value||"");
+  const skillOpts=state.skills.map(s=>`<option value="${s.id}">${escapeHtml(s.icon)} ${escapeHtml(s.name)}</option>`).join(""); $("#habitSkillId").innerHTML=skillOpts||""; $("#questTargetSkill").innerHTML=skillOpts||"";
+  const habitOpts=state.habits.map(h=>`<option value="${h.id}">${escapeHtml(h.icon)} ${escapeHtml(h.name)}</option>`).join(""); $("#questTargetHabit").innerHTML=habitOpts||"";
 }
+function openSkillModal(id=null){const e=!!id,s=e?getSkill(id):null;$("#skillModalTitle").textContent=e?"Edit Skill":"Add Skill";$("#skillId").value=s?.id||"";$("#skillName").value=s?.name||"";$("#skillBaseXp").value=s?.baseXp||50;$("#skillDescription").value=s?.description||"";$("#skillIcon").value=s?.icon||"🎸";$("#skillIconPreview").textContent=s?.icon||"🎸";$("#deleteSkillBtn").classList.toggle("hidden",!e);openModal("skillModal")}
+function openHabitModal(id=null,skillPrefill=null){populateSelects();const e=!!id,h=e?getHabit(id):null;$("#habitModalTitle").textContent=e?"Edit Habit":"Add Habit";$("#habitId").value=h?.id||"";$("#habitName").value=h?.name||"";$("#habitSkillId").value=h?.skillId||skillPrefill||state.skills[0]?.id||"";$("#habitXpReward").value=h?.xpReward||10;$("#habitCoinReward").value=h?.coinReward||2;$("#habitDailyCap").value=h?.dailyCap||1;$("#habitDescription").value=h?.description||"";$("#habitNegative").checked=!!h?.isNegative;$("#habitIcon").value=h?.icon||"🔥";$("#habitIconPreview").textContent=h?.icon||"🔥";$("#deleteHabitBtn").classList.toggle("hidden",!e);openModal("habitModal")}
+function openRewardModal(id=null){const e=!!id,r=getReward(id);$("#rewardModalTitle").textContent=e?"Edit Reward":"Add Reward";$("#rewardId").value=r?.id||"";$("#rewardName").value=r?.name||"";$("#rewardCost").value=r?.cost||25;$("#rewardCategory").value=r?.category||"Fun";$("#rewardNote").value=r?.note||"";$("#rewardRepeatable").checked=r?.repeatable!==false;$("#rewardIcon").value=r?.icon||"🎮";$("#rewardIconPreview").textContent=r?.icon||"🎮";$("#deleteRewardBtn").classList.toggle("hidden",!e);openModal("rewardModal")}
+function openQuestModal(id=null){populateSelects();const e=!!id,q=state.quests.find(x=>x.id===id);$("#questModalTitle").textContent=e?"Edit Quest":"Add Quest";$("#questId").value=q?.id||"";$("#questType").value=q?.type||"habit_count";$("#questTargetHabit").value=q&&(q.type==="habit_count"||q.type==="streak_goal")?q.targetId:state.habits[0]?.id||"";$("#questTargetSkill").value=q&&q.type==="skill_level"?q.targetId:state.skills[0]?.id||"";$("#questTargetValue").value=q?.targetValue||5;$("#questRewardCoins").value=q?.rewardCoins||20;$("#questTitle").value=q?.title||"";$("#deleteQuestBtn").classList.toggle("hidden",!e);updateQuestTargetVisibility();openModal("questModal")}
+function updateQuestTargetVisibility(){const type=$("#questType").value;$("#questTargetHabitWrap").classList.toggle("hidden",!(type==="habit_count"||type==="streak_goal"));$("#questTargetSkillWrap").classList.toggle("hidden",type!=="skill_level")}
+function autoQuestTitle(type,targetId,targetValue){if(type==="habit_count"){const h=getHabit(targetId);return`Complete ${h?.name||"habit"} ${targetValue} times`}if(type==="skill_level"){const s=getSkill(targetId);return`Reach ${s?.name||"skill"} level ${targetValue}`}if(type==="streak_goal"){const h=getHabit(targetId);return`Maintain ${h?.name||"habit"} streak for ${targetValue} days`}return`Earn ${targetValue} coins`}
+function submitSkillForm(e){e.preventDefault();const id=$("#skillId").value,p={id:id||uid("skill"),name:$("#skillName").value.trim(),baseXp:Number($("#skillBaseXp").value),description:$("#skillDescription").value.trim(),icon:$("#skillIcon").value,level:1,xp:0,xpRequired:Number($("#skillBaseXp").value),expanded:true,createdAt:nowIso(),lastUsedAt:nowIso()};if(!p.name)return;if(id){const x=getSkill(id);x.name=p.name;x.baseXp=p.baseXp;x.description=p.description;x.icon=p.icon;x.xpRequired=xpRequiredForLevel(x.baseXp,x.level);addLog(`Updated skill — ${x.name}`)}else{state.skills.push(p);addLog(`Added skill — ${p.name}`)}saveState();closeAllModals();render()}
+function submitHabitForm(e){e.preventDefault();const id=$("#habitId").value,p={id:id||uid("habit"),skillId:$("#habitSkillId").value,name:$("#habitName").value.trim(),xpReward:Number($("#habitXpReward").value),coinReward:Number($("#habitCoinReward").value),dailyCap:Number($("#habitDailyCap").value),description:$("#habitDescription").value.trim(),icon:$("#habitIcon").value,streakEnabled:true,isNegative:$("#habitNegative").checked,createdAt:nowIso(),timesCompletedToday:0,totalCompletions:0,streak:0,bestStreak:0,lastCompletedDate:null};if(!p.name||!p.skillId)return;if(id){const x=getHabit(id);x.skillId=p.skillId;x.name=p.name;x.xpReward=p.xpReward;x.coinReward=p.coinReward;x.dailyCap=p.dailyCap;x.description=p.description;x.icon=p.icon;x.isNegative=p.isNegative;addLog(`Updated habit — ${x.name}`)}else{state.habits.push(p);addLog(`Added habit — ${p.name}`)}saveState();closeAllModals();render()}
+function submitRewardForm(e){e.preventDefault();const id=$("#rewardId").value,p={id:id||uid("reward"),name:$("#rewardName").value.trim(),cost:Number($("#rewardCost").value),category:$("#rewardCategory").value,note:$("#rewardNote").value.trim(),repeatable:$("#rewardRepeatable").checked,icon:$("#rewardIcon").value,createdAt:nowIso()};if(!p.name)return;if(id){Object.assign(getReward(id),p);addLog(`Updated reward — ${p.name}`)}else{state.rewards.push(p);addLog(`Added reward — ${p.name}`)}saveState();closeAllModals();render()}
+function submitQuestForm(e){e.preventDefault();const id=$("#questId").value,type=$("#questType").value,targetId=type==="skill_level"?$("#questTargetSkill").value:type==="coin_goal"?null:$("#questTargetHabit").value,targetValue=Number($("#questTargetValue").value),title=$("#questTitle").value.trim()||autoQuestTitle(type,targetId,targetValue),p={id:id||uid("quest"),type,title,targetId,targetValue,rewardCoins:Number($("#questRewardCoins").value),completed:false,completedAt:null,createdAt:nowIso()};if(id){const x=state.quests.find(q=>q.id===id);x.type=p.type;x.title=p.title;x.targetId=p.targetId;x.targetValue=p.targetValue;x.rewardCoins=p.rewardCoins;x.completed=false;x.completedAt=null;addLog(`Updated quest — ${x.title}`)}else{state.quests.push(p);addLog(`Added quest — ${p.title}`)}checkQuestCompletion();saveState();closeAllModals();render()}
+function deleteSkill(){const id=$("#skillId").value,skill=getSkill(id);if(!skill||!confirm(`Delete skill "${skill.name}" and all its habits?`))return;state.skills=state.skills.filter(s=>s.id!==id);state.habits=state.habits.filter(h=>h.skillId!==id);state.quests=state.quests.filter(q=>q.targetId!==id);addLog(`Deleted skill — ${skill.name}`);closeAllModals();saveState();render()}
+function deleteHabit(){const id=$("#habitId").value,h=getHabit(id);if(!h||!confirm(`Delete habit "${h.name}"?`))return;state.habits=state.habits.filter(x=>x.id!==id);state.quests=state.quests.filter(q=>q.targetId!==id);addLog(`Deleted habit — ${h.name}`);closeAllModals();saveState();render()}
+function deleteReward(){const id=$("#rewardId").value,r=getReward(id);if(!r||!confirm(`Delete reward "${r.name}"?`))return;state.rewards=state.rewards.filter(x=>x.id!==id);addLog(`Deleted reward — ${r.name}`);closeAllModals();saveState();render()}
+function deleteQuest(){const id=$("#questId").value,q=state.quests.find(x=>x.id===id);if(!q||!confirm(`Delete quest "${q.title}"?`))return;state.quests=state.quests.filter(x=>x.id!==id);addLog(`Deleted quest — ${q.title}`);closeAllModals();saveState();render()}
+function skillSorter(a,b){if(sortValue==="name")return a.name.localeCompare(b.name);if(sortValue==="level")return(b.level-a.level)||(b.xp-a.xp);if(sortValue==="progress")return(b.xp/b.xpRequired)-(a.xp/a.xpRequired);return new Date(b.lastUsedAt||0)-new Date(a.lastUsedAt||0)}
+function openIconPicker(targetInputId){currentIconTarget=targetInputId;renderIconPicker("All");openModal("iconPickerModal")}
+function renderIconPicker(category){$("#iconFilterBar").innerHTML=Object.keys(ICON_SETS).map(cat=>`<button class="filter-pill ${cat===category?"active":""}" data-icon-filter="${cat}">${cat}</button>`).join("");$("#iconGrid").innerHTML=ICON_SETS[category].map(icon=>`<button class="icon-btn" data-pick-icon="${icon}">${icon}</button>`).join("")}
+function exportSave(){const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="skillforge-save.json";a.click();URL.revokeObjectURL(url)}
+function importSave(file){const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result);ensureShape(parsed);state=parsed;dailyReset(state);saveState();render();showToast("Save imported.","good")}catch(e){showToast("Import failed. Bad JSON.","bad")}};reader.readAsText(file)}
 
+document.addEventListener("click",e=>{
+  const btn=e.target.closest("button, .picker-trigger"); if(!btn)return;
+  if(btn.matches("[data-tab]")) setActiveTab(btn.dataset.tab);
+  if(btn.matches("[data-go-tab]")) setActiveTab(btn.dataset.goTab);
+  if(btn.id==="quickAddBtn") $("#quickAddMenu").classList.toggle("hidden");
+  if(btn.id==="settingsBtn") openModal("settingsModal");
+  if(btn.id==="walletBtn") setActiveTab("rewards");
+  if(btn.matches("[data-open-modal]")){const t=btn.dataset.openModal; if(t==="skillModal")openSkillModal(); if(t==="habitModal")openHabitModal(); if(t==="rewardModal")openRewardModal(); if(t==="questModal")openQuestModal();}
+  if(btn.matches("[data-close-modal]") || btn.id==="modalBackdrop") closeAllModals();
+  if(btn.matches("[data-toggle-skill]")){const s=getSkill(btn.dataset.toggleSkill); if(s){s.expanded=!s.expanded; saveState(); render();}}
+  if(btn.matches("[data-edit-skill]")) openSkillModal(btn.dataset.editSkill);
+  if(btn.matches("[data-edit-habit]")) openHabitModal(btn.dataset.editHabit);
+  if(btn.matches("[data-edit-reward]")) openRewardModal(btn.dataset.editReward);
+  if(btn.matches("[data-edit-quest]")) openQuestModal(btn.dataset.editQuest);
+  if(btn.matches("[data-add-habit-under]")) openHabitModal(null,btn.dataset.addHabitUnder);
+  if(btn.matches("[data-hit-habit]")) applyHabit(btn.dataset.hitHabit,btn);
+  if(btn.matches("[data-undo-habit]")) undoHabit(btn.dataset.undoHabit,btn);
+  if(btn.matches("[data-buy-reward]")) buyReward(btn.dataset.buyReward);
+  if(btn.matches("[data-reward-filter]")){rewardFilter=btn.dataset.rewardFilter; renderRewards();}
+  if(btn.matches("[data-quest-filter]")){questFilter=btn.dataset.questFilter; renderQuests();}
+  if(btn.matches("[data-skill-focus]")){setActiveTab("skills"); setTimeout(()=>document.getElementById(`skill-${btn.dataset.skillFocus}`)?.scrollIntoView({behavior:"smooth",block:"center"}),30);}
+  if(btn.matches("[data-picker-target]")) openIconPicker(btn.dataset.pickerTarget);
+  if(btn.matches("[data-icon-filter]")) renderIconPicker(btn.dataset.iconFilter);
+  if(btn.matches("[data-pick-icon]")){if(currentIconTarget){const input=document.getElementById(currentIconTarget),preview=document.getElementById(`${currentIconTarget}Preview`); input.value=btn.dataset.pickIcon; if(preview)preview.textContent=btn.dataset.pickIcon;} closeAllModals();}
+  if(btn.id==="exportBtn") exportSave();
+  if(btn.id==="resetBtn"){if(confirm("Reset everything? This wipes the app.")){localStorage.removeItem(STORAGE_KEY); state=defaultState(); render(); closeAllModals(); showToast("App reset.","good");}}
+  if(btn.id==="deleteSkillBtn") deleteSkill();
+  if(btn.id==="deleteHabitBtn") deleteHabit();
+  if(btn.id==="deleteRewardBtn") deleteReward();
+  if(btn.id==="deleteQuestBtn") deleteQuest();
+});
+document.addEventListener("input",e=>{if(e.target.id==="skillSearchInput"){searchValue=e.target.value; renderSkills();} if(e.target.id==="skillSortSelect"){sortValue=e.target.value; renderSkills();}});
+$("#skillForm").addEventListener("submit",submitSkillForm); $("#habitForm").addEventListener("submit",submitHabitForm);
+
+render(); setActiveTab("dashboard");
+
+
+/* ===== V7 Stable Tab Rebuild ===== */
+(function(){
+  const __originalRender = render;
+  render = function(){
+    __originalRender();
+    const activeBtn = document.querySelector('.tabs .tab-btn.active');
+    const activeTab = activeBtn ? activeBtn.dataset.tab : 'dashboard';
+    setActiveTab(activeTab);
+  };
+
+  window.addEventListener('resize', () => {
+    clearTimeout(window.__sf7ResizeTimer);
+    window.__sf7ResizeTimer = setTimeout(() => {
+      const activeBtn = document.querySelector('.tabs .tab-btn.active');
+      const activeTab = activeBtn ? activeBtn.dataset.tab : 'dashboard';
+      setActiveTab(activeTab);
+    }, 80);
+  });
+})();
+
+
+/* ===== V8.1 quest/store overrides ===== */
+function ensureV81Shape(d){
+  d.meta ||= {};
+  if(!d.meta.questPackSource) d.meta.questPackSource = "external-pending";
+  d.permissions ||= [];
+  d.earnedRewards ||= [];
+  d.rewards ||= [];
+  d.quests ||= [];
+  d.rewards.forEach(r=>{r.type ||= "custom"; r.grantPermission ||= ""});
+  d.quests.forEach(q=>{
+    q.timeLimitHours ||= 0;
+    q.prerequisiteQuestId ||= "";
+    q.requiredPermission ||= "";
+    q.rewardTitle ||= "";
+    q.rewardIcon ||= "🏆";
+    if(q.startedAt===undefined) q.startedAt = null;
+    if(q.expiresAt===undefined) q.expiresAt = null;
+  });
+}
+ensureV81Shape(state);
 
 function getQuest(id){return state.quests.find(q=>q.id===id)}
 function hasPermission(key){return !key || state.permissions.includes(key)}
-function getQuestName(id){const q=getQuest(id);return q?q.title:"None"}
+function getQuestName(id){const q=getQuest(id); return q ? q.title : "None"}
 function normalizeQuest(q){
   return {
     id:q.id||uid("quest"),
@@ -306,11 +344,16 @@ function normalizeQuest(q){
     createdAt:q.createdAt||nowIso()
   };
 }
-function isQuestExpired(q){return !!(q.startedAt && q.expiresAt && !q.completed && new Date(q.expiresAt).getTime() < Date.now())}
+function isQuestExpired(q){
+  return !!(q.startedAt && q.expiresAt && !q.completed && new Date(q.expiresAt).getTime() < Date.now());
+}
 function getQuestStatus(q){
   if(q.completed) return "completed";
   if(isQuestExpired(q)) return "expired";
-  if(q.prerequisiteQuestId){const p=getQuest(q.prerequisiteQuestId); if(p && !p.completed) return "locked";}
+  if(q.prerequisiteQuestId){
+    const prereq = getQuest(q.prerequisiteQuestId);
+    if(prereq && !prereq.completed) return "locked";
+  }
   if(q.requiredPermission && !hasPermission(q.requiredPermission)) return "locked";
   if(q.startedAt) return "active";
   return "ready";
@@ -333,14 +376,17 @@ function getTimeRemainingLabel(q){
 }
 function addEarnedReward(name, icon, source){
   if(!name) return;
-  state.earnedRewards.unshift({id:uid("earned"),name,icon:icon||"🏆",source:source||"Quest",earnedAt:nowIso()});
+  state.earnedRewards.unshift({id:uid("earned"), name, icon:icon||"🏆", source:source||"Reward", earnedAt:nowIso()});
   state.earnedRewards = state.earnedRewards.slice(0, 60);
 }
 function startQuest(id){
   const q=getQuest(id); if(!q) return;
-  if(getQuestStatus(q)!=="ready"){showToast(`Quest cannot start yet.<br><strong>${escapeHtml(q.title)}</strong>`,"bad"); return;}
+  if(getQuestStatus(q)!=="ready"){
+    showToast(`Quest cannot start yet.<br><strong>${escapeHtml(q.title)}</strong>`,"bad");
+    return;
+  }
   q.startedAt = nowIso();
-  q.expiresAt = q.timeLimitHours>0 ? new Date(Date.now()+q.timeLimitHours*3600000).toISOString() : null;
+  q.expiresAt = q.timeLimitHours>0 ? new Date(Date.now() + q.timeLimitHours*3600000).toISOString() : null;
   addLog(`Started quest — ${q.title}`);
   showToast(`Quest started<br><strong>${escapeHtml(q.title)}</strong>`,"good");
   saveState(); render();
@@ -361,11 +407,11 @@ async function loadQuestPackFile(force=false){
   }catch(e){}
 }
 function exportQuestPack(){
-  const payload = {quests: state.quests.map(q=>normalizeQuest(q))};
-  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+  const payload = {quests: state.quests.map(normalizeQuest)};
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
-  const a=document.createElement("a");
-  a.href=url; a.download="quests.json"; a.click();
+  const a = document.createElement("a");
+  a.href = url; a.download = "quests.json"; a.click();
   URL.revokeObjectURL(url);
 }
 function importQuestPack(file){
@@ -378,21 +424,87 @@ function importQuestPack(file){
       state.meta.questPackSource = "local";
       saveState(); render();
       showToast("Quest pack imported.","good");
-    }catch(e){ showToast("Quest pack import failed.","bad"); }
+    }catch(e){
+      showToast("Quest pack import failed.","bad");
+    }
   };
   reader.readAsText(file);
 }
 function refreshQuestPrerequisiteOptions(currentId=""){
-  const options = ['<option value="">None</option>'].concat(
+  const opts = ['<option value="">None</option>'].concat(
     state.quests.filter(q=>q.id!==currentId).map(q=>`<option value="${q.id}">${escapeHtml(q.title)}</option>`)
   ).join("");
-  const el=$("#questPrerequisite"); if(el) el.innerHTML=options;
+  const el = $("#questPrerequisite");
+  if(el) el.innerHTML = opts;
+}
+function updateQuestTargetVisibility(){
+  const type=$("#questType").value;
+  $("#questTargetHabitWrap").classList.toggle("hidden", !(type==="habit_count"||type==="streak_goal"));
+  $("#questTargetSkillWrap").classList.toggle("hidden", type!=="skill_level");
+}
+function autoQuestTitle(type,targetId,targetValue){
+  if(type==="habit_count"){const h=getHabit(targetId);return`Complete ${h?.name||"habit"} ${targetValue} times`}
+  if(type==="skill_level"){const s=getSkill(targetId);return`Reach ${s?.name||"skill"} level ${targetValue}`}
+  if(type==="streak_goal"){const h=getHabit(targetId);return`Maintain ${h?.name||"habit"} streak for ${targetValue} days`}
+  return `Earn ${targetValue} coins`
+}
+function getQuestProgress(q){
+  if(q.type==="habit_count"){const h=getHabit(q.targetId);return{current:h?h.totalCompletions:0,target:q.targetValue}}
+  if(q.type==="skill_level"){const s=getSkill(q.targetId);return{current:s?s.level:0,target:q.targetValue}}
+  if(q.type==="streak_goal"){const h=getHabit(q.targetId);return{current:h?h.streak:0,target:q.targetValue}}
+  if(q.type==="coin_goal") return {current:state.wallet.totalCoinsEarned,target:q.targetValue}
+  return {current:0,target:q.targetValue||1}
+}
+function checkQuestCompletion(){
+  let any=false;
+  state.quests.forEach(q=>{
+    if(q.completed || !q.startedAt) return;
+    if(isQuestExpired(q)){ any=true; return; }
+    const p=getQuestProgress(q);
+    if(p.current>=p.target){
+      q.completed=true;
+      q.completedAt=nowIso();
+      state.wallet.coins += q.rewardCoins;
+      state.wallet.totalCoinsEarned += q.rewardCoins;
+      state.analytics.totalQuestsDone++;
+      if(q.rewardTitle) addEarnedReward(q.rewardTitle, q.rewardIcon, q.title);
+      addLog(`Quest complete — ${q.title} (+${q.rewardCoins} coins)`);
+      showToast(`Quest complete<br><strong>${escapeHtml(q.title)}</strong><br>+${q.rewardCoins} coins`,"good");
+      playQuestSound();
+      any=true;
+    }
+  });
+  if(any) saveState();
 }
 
-function openSkillModal(id=null){const e=!!id,s=e?getSkill(id):null;$("#skillModalTitle").textContent=e?"Edit Skill":"Add Skill";$("#skillId").value=s?.id||"";$("#skillName").value=s?.name||"";$("#skillBaseXp").value=s?.baseXp||50;$("#skillDescription").value=s?.description||"";$("#skillIcon").value=s?.icon||"🎸";$("#skillIconPreview").textContent=s?.icon||"🎸";$("#deleteSkillBtn").classList.toggle("hidden",!e);openModal("skillModal")}
-function openHabitModal(id=null,skillPrefill=null){populateSelects();const e=!!id,h=e?getHabit(id):null;$("#habitModalTitle").textContent=e?"Edit Habit":"Add Habit";$("#habitId").value=h?.id||"";$("#habitName").value=h?.name||"";$("#habitSkillId").value=h?.skillId||skillPrefill||state.skills[0]?.id||"";$("#habitXpReward").value=h?.xpReward||10;$("#habitCoinReward").value=h?.coinReward||2;$("#habitDailyCap").value=h?.dailyCap||1;$("#habitDescription").value=h?.description||"";$("#habitNegative").checked=!!h?.isNegative;$("#habitIcon").value=h?.icon||"🔥";$("#habitIconPreview").textContent=h?.icon||"🔥";$("#deleteHabitBtn").classList.toggle("hidden",!e);openModal("habitModal")}
+renderRewardCard = function(r){
+  const aff=state.wallet.coins>=r.cost;
+  const permLine = r.grantPermission ? `<div class="muted" style="margin-top:4px">Unlocks <code>${escapeHtml(r.grantPermission)}</code></div>` : "";
+  return `<div class="reward-card ${!aff?"reward-disabled":""}"><div class="reward-icon-box">${r.icon}</div><strong>${escapeHtml(r.name)}</strong><div class="muted" style="margin-top:4px">${escapeHtml(r.category)} · ${escapeHtml(r.type||"custom")}</div>${permLine}<div class="muted" style="margin-top:4px; min-height:36px">${escapeHtml(r.note||"No note")}</div><div class="panel-header" style="margin-top:10px;margin-bottom:0"><span class="reward-price">🪙 ${r.cost}</span><span class="tag">${r.repeatable?"Repeatable":"One-time"}</span></div><div class="item-actions" style="margin-top:10px"><button class="primary-btn" ${aff?"":"disabled"} data-buy-reward="${r.id}">Buy</button><button class="secondary-btn" data-edit-reward="${r.id}">Edit</button></div></div>`;
+};
 
-function openRewardModal(id=null){
+renderRewards = function(){
+  const filtered=state.rewards.filter(r=>rewardFilter==="All"||r.category===rewardFilter);
+  const cats=["All",...new Set(state.rewards.map(r=>r.category))];
+  const earned = state.earnedRewards.slice(0,9);
+  $("#rewardsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Store</h3><div class="muted">Rewards are earned. Store buys fun time, unlocks, and utility.</div></div><button class="primary-btn" data-open-modal="rewardModal">+ Store Item</button></div><div class="store-subgrid"><div class="mini-row"><div><strong>Wallet</strong><div class="muted">Spend coins on store items</div></div><div class="reward-price">🪙 ${state.wallet.coins}</div></div><div class="mini-row"><div><strong>Permissions</strong><div class="muted">Quest unlocks bought in store</div></div><div class="permission-row">${state.permissions.length ? state.permissions.map(p=>`<span class="permission-chip">${escapeHtml(p)}</span>`).join("") : '<span class="muted">None yet</span>'}</div></div></div><div class="panel-header" style="margin-top:10px"><div><h4>Earned Rewards</h4><div class="muted">Quest and level rewards</div></div></div>${earned.length ? `<div class="inventory-grid-lite">${earned.map(item=>`<div class="inventory-item"><div class="reward-icon-box">${item.icon||"🏆"}</div><strong>${escapeHtml(item.name)}</strong><div class="muted" style="margin-top:4px">${escapeHtml(item.source||"Reward")}</div></div>`).join("")}</div>` : `<div class="empty-state">No earned rewards yet.</div>`}<div class="panel-header" style="margin-top:16px"><div><h4>Store Items</h4><div class="muted">Buy access, time, and utility</div></div></div><div class="filters">${cats.map(cat=>`<button class="filter-pill ${rewardFilter===cat?"active":""}" data-reward-filter="${cat}">${cat}</button>`).join("")}</div>${filtered.length ? `<div class="inventory-grid">${filtered.map(renderRewardCard).join("")}</div>` : `<div class="empty-state">No store items in this filter.</div>`}</div>`;
+};
+
+renderQuestCard = function(q){
+  const p=getQuestProgress(q), pct=Math.min(100,Math.round(p.current/Math.max(1,p.target)*100));
+  const status=getQuestStatus(q);
+  const prereqLine=q.prerequisiteQuestId?`<div class="muted">Requires: ${escapeHtml(getQuestName(q.prerequisiteQuestId))}</div>`:"";
+  const permLine=q.requiredPermission?`<div class="muted">Permission: <code>${escapeHtml(q.requiredPermission)}</code></div>`:"";
+  const timerLine=q.timeLimitHours>0?`<div class="muted">Timer: ${q.timeLimitHours}h${q.startedAt?` · ${escapeHtml(getTimeRemainingLabel(q))}`:" after start"}</div>`:"";
+  return `<div class="quest-card ${q.completed?"quest-complete":""}"><div class="panel-header"><div><strong>${questIcon(q)} ${escapeHtml(q.title)}</strong><div class="muted">${questTypeLabel(q.type)}</div></div><div class="item-actions">${getQuestStatusChip(q)}<button class="secondary-btn" data-edit-quest="${q.id}">Edit</button></div></div><div class="progress"><div class="progress-inner" style="width:${pct}%"></div></div><div class="quest-progress"><span>${p.current}/${p.target}</span><span>Reward 🪙 ${q.rewardCoins}</span></div><div class="quest-meta">${q.rewardTitle?`<div class="quest-reward-line">Earned reward: ${escapeHtml(q.rewardIcon||"🏆")} ${escapeHtml(q.rewardTitle)}</div>`:""}${timerLine}${prereqLine}${permLine}</div><div class="quest-actions">${status==="ready"?`<button class="primary-btn" data-start-quest="${q.id}">Start Quest</button>`:""}${status==="locked"?`<button class="secondary-btn" disabled>Locked</button>`:""}${status==="active"?`<button class="secondary-btn" disabled>In Progress</button>`:""}${status==="expired"?`<button class="danger-btn" data-restart-quest="${q.id}">Restart Quest</button>`:""}</div>${q.completed?`<div class="tiny-note" style="margin-top:8px">Completed ${new Date(q.completedAt).toLocaleDateString()}</div>`:""}</div>`;
+};
+
+renderQuests = function(){
+  const quests=state.quests.filter(q=>questFilter==="All"?true:questFilter==="Completed"?q.completed:!q.completed);
+  $("#questsTab").innerHTML=`<div class="panel"><div class="panel-header"><div><h3>Quests</h3><div class="muted">Start timers, prerequisites, and permission locks.</div></div><button class="primary-btn" data-open-modal="questModal">+ Quest</button></div><div class="filters">${["Active","Completed","All"].map(type=>`<button class="filter-pill ${questFilter===type?"active":""}" data-quest-filter="${type}">${type}</button>`).join("")}</div><div class="list-stack">${quests.length ? quests.map(renderQuestCard).join("") : `<div class="empty-state">No quests in this view.</div>`}</div></div>`;
+};
+
+openRewardModal = function(id=null){
   const e=!!id,r=getReward(id);
   $("#rewardModalTitle").textContent=e?"Edit Store Item":"Add Store Item";
   $("#rewardId").value=r?.id||"";
@@ -407,33 +519,134 @@ function openRewardModal(id=null){
   $("#rewardIconPreview").textContent=r?.icon||"🎮";
   $("#deleteRewardBtn").classList.toggle("hidden",!e);
   openModal("rewardModal");
-}
-);
-document.addEventListener("input",e=>{if(e.target.id==="skillSearchInput"){searchValue=e.target.value; renderSkills();} if(e.target.id==="skillSortSelect"){sortValue=e.target.value; renderSkills();}});
-$("#questType").addEventListener("change",updateQuestTargetVisibility);
-$("#skillForm").addEventListener("submit",submitSkillForm); $("#habitForm").addEventListener("submit",submitHabitForm); $("#rewardForm").addEventListener("submit",submitRewardForm); $("#questForm").addEventListener("submit",submitQuestForm);
-$("#importInput").addEventListener("change",e=>{const file=e.target.files?.[0]; if(file)importSave(file);});
-$("#questPackInput").addEventListener("change",e=>{const file=e.target.files?.[0]; if(file)importQuestPack(file);});
+};
 
-ensureV8Shape(state); render(); setActiveTab("dashboard"); loadQuestPackFile(false);
+openQuestModal = function(id=null){
+  populateSelects();
+  const e=!!id,q=getQuest(id);
+  $("#questModalTitle").textContent=e?"Edit Quest":"Add Quest";
+  $("#questId").value=q?.id||"";
+  $("#questType").value=q?.type||"habit_count";
+  $("#questTargetHabit").value=q&&(q.type==="habit_count"||q.type==="streak_goal")?q.targetId:state.habits[0]?.id||"";
+  $("#questTargetSkill").value=q&&q.type==="skill_level"?q.targetId:state.skills[0]?.id||"";
+  $("#questTargetValue").value=q?.targetValue||5;
+  $("#questTimeLimitHours").value=q?.timeLimitHours||0;
+  refreshQuestPrerequisiteOptions(q?.id||"");
+  $("#questPrerequisite").value=q?.prerequisiteQuestId||"";
+  $("#questRequiredPermission").value=q?.requiredPermission||"";
+  $("#questRewardCoins").value=q?.rewardCoins||20;
+  $("#questRewardTitle").value=q?.rewardTitle||"";
+  $("#questRewardIcon").value=q?.rewardIcon||"🏆";
+  $("#questRewardIconPreview").textContent=q?.rewardIcon||"🏆";
+  $("#questTitle").value=q?.title||"";
+  $("#deleteQuestBtn").classList.toggle("hidden",!e);
+  updateQuestTargetVisibility();
+  openModal("questModal");
+};
 
+submitRewardForm = function(e){
+  e.preventDefault();
+  const id=$("#rewardId").value;
+  const p={id:id||uid("reward"),name:$("#rewardName").value.trim(),cost:Number($("#rewardCost").value),type:$("#rewardType").value,category:$("#rewardCategory").value,grantPermission:$("#rewardPermissionKey").value.trim(),note:$("#rewardNote").value.trim(),repeatable:$("#rewardRepeatable").checked,icon:$("#rewardIcon").value,createdAt:nowIso()};
+  if(!p.name) return;
+  if(id){Object.assign(getReward(id),p); addLog(`Updated store item — ${p.name}`)} else {state.rewards.push(p); addLog(`Added store item — ${p.name}`)}
+  saveState(); closeAllModals(); render();
+};
 
-/* ===== V7 Stable Tab Rebuild ===== */
+submitQuestForm = function(e){
+  e.preventDefault();
+  const id=$("#questId").value, type=$("#questType").value, targetId=type==="skill_level"?$("#questTargetSkill").value:type==="coin_goal"?null:$("#questTargetHabit").value, targetValue=Number($("#questTargetValue").value), title=$("#questTitle").value.trim()||autoQuestTitle(type,targetId,targetValue);
+  const p={id:id||uid("quest"),type,title,targetId,targetValue,timeLimitHours:Number($("#questTimeLimitHours").value||0),prerequisiteQuestId:$("#questPrerequisite").value||"",requiredPermission:$("#questRequiredPermission").value.trim(),rewardCoins:Number($("#questRewardCoins").value||0),rewardTitle:$("#questRewardTitle").value.trim(),rewardIcon:$("#questRewardIcon").value||"🏆",startedAt:null,expiresAt:null,completed:false,completedAt:null,createdAt:nowIso()};
+  if(id){const x=getQuest(id); Object.assign(x,p,{createdAt:x.createdAt||nowIso()}); addLog(`Updated quest — ${x.title}`)} else {state.quests.push(p); addLog(`Added quest — ${p.title}`)}
+  state.meta.questPackSource="local";
+  saveState(); closeAllModals(); render();
+};
+
+populateSelects = function(){
+  const skillOpts=state.skills.map(s=>`<option value="${s.id}">${escapeHtml(s.icon)} ${escapeHtml(s.name)}</option>`).join("");
+  $("#habitSkillId").innerHTML=skillOpts||"";
+  $("#questTargetSkill").innerHTML=skillOpts||"";
+  const habitOpts=state.habits.map(h=>`<option value="${h.id}">${escapeHtml(h.icon)} ${escapeHtml(h.name)}</option>`).join("");
+  $("#questTargetHabit").innerHTML=habitOpts||"";
+  refreshQuestPrerequisiteOptions($("#questId")?.value||"");
+};
+
+buyReward = function(id){
+  const r=getReward(id); if(!r) return;
+  if(state.wallet.coins<r.cost){showToast(`Need ${r.cost-state.wallet.coins} more coins for <strong>${escapeHtml(r.name)}</strong>`,"bad"); playClickBad(); return}
+  if(r.grantPermission && state.permissions.includes(r.grantPermission) && !r.repeatable){
+    showToast(`Already unlocked.<br><strong>${escapeHtml(r.name)}</strong>`,"bad"); return;
+  }
+  state.wallet.coins -= r.cost;
+  state.wallet.totalCoinsSpent += r.cost;
+  state.stats.rewardsRedeemed++;
+  if(r.grantPermission && !state.permissions.includes(r.grantPermission)) state.permissions.push(r.grantPermission);
+  addLog(`Bought store item — ${r.name} (-${r.cost} coins)`);
+  showToast(`Bought<br><strong>${escapeHtml(r.name)}</strong><br>-${r.cost} coins`,"good");
+  playQuestSound();
+  if(!r.repeatable) state.rewards=state.rewards.filter(x=>x.id!==id);
+  saveState(); render();
+};
+
+applyHabit = function(id,btn){
+  const h=getHabit(id); if(!h) return; const s=getSkill(h.skillId); if(!s) return;
+  if(h.timesCompletedToday>=h.dailyCap){showToast(`Cap reached for <strong>${escapeHtml(h.name)}</strong>`,"bad");playClickBad();spawnFloatingText(btn,"CAP","bad");return}
+  const neg=h.isNegative,xp=neg?Math.ceil(h.xpReward*1.5):h.xpReward,coin=neg?Math.ceil(h.coinReward*1.5):h.coinReward;
+  h.timesCompletedToday++; h.totalCompletions++; state.analytics.totalHabitsApplied++;
+  const last=h.lastCompletedDate;
+  if(h.streakEnabled&&last!==todayStr()){ if(last){const diff=Math.floor((new Date(todayStr())-new Date(last))/(1000*60*60*24)); h.streak=diff===1?h.streak+1:1}else h.streak=1; h.bestStreak=Math.max(h.bestStreak,h.streak) }
+  h.lastCompletedDate=todayStr(); s.lastUsedAt=nowIso();
+  if(neg){
+    s.xp=Math.max(0,s.xp-xp); state.wallet.coins=Math.max(0,state.wallet.coins-coin);
+    state.analytics.negativeHits++; state.analytics.totalXpLost += xp;
+    addLog(`Negative habit — ${h.name} (-${xp} XP / -${coin} coins)`); showToast(`Negative habit hit<br><strong>${escapeHtml(h.name)}</strong><br>-${xp} XP / -${coin} coins`,"bad"); playClickBad(); spawnFloatingText(btn,`-${xp} XP`,"bad");
+  }else{
+    s.xp+=xp; state.wallet.coins+=coin; state.wallet.totalCoinsEarned+=coin; state.stats.habitsCompletedToday++; state.stats.xpEarnedToday+=xp; state.stats.coinsEarnedToday+=coin;
+    state.analytics.positiveHits++; state.analytics.totalXpEarned += xp;
+    addLog(`+${xp} XP / +${coin} coins — ${h.name}`); showToast(`+${xp} XP / +${coin} coins<br><strong>${escapeHtml(h.name)}</strong>`,"good"); playClickGood(); spawnFloatingText(btn,`+${xp} XP`,"good"); spawnFloatingText(btn,`+${coin} 🪙`,"gold");
+  }
+  while(s.xp>=s.xpRequired){
+    s.xp-=s.xpRequired; s.level++; s.xpRequired=xpRequiredForLevel(s.baseXp,s.level);
+    addEarnedReward(`${s.name} Lv ${s.level}`, s.icon, "Level Up");
+    addLog(`Level up — ${s.name} Lv ${s.level}`); showToast(`Level up!<br><strong>${escapeHtml(s.name)}</strong> is now Lv ${s.level}`,"good"); playLevelUpSound();
+  }
+  recomputeOverallLevel(); checkQuestCompletion(); saveState(); render();
+};
+
+deleteQuest = function(){
+  const id=$("#questId").value,q=getQuest(id); if(!q||!confirm(`Delete quest "${q.title}"?`)) return;
+  state.quests=state.quests.filter(x=>x.id!==id);
+  state.meta.questPackSource="local";
+  addLog(`Deleted quest — ${q.title}`);
+  closeAllModals(); saveState(); render();
+};
+
 (function(){
-  const __originalRender = render;
-  render = function(){
-    __originalRender();
-    const activeBtn = document.querySelector('.tabs .tab-btn.active');
-    const activeTab = activeBtn ? activeBtn.dataset.tab : 'dashboard';
-    setActiveTab(activeTab);
-  };
-
-  window.addEventListener('resize', () => {
-    clearTimeout(window.__sf7ResizeTimer);
-    window.__sf7ResizeTimer = setTimeout(() => {
-      const activeBtn = document.querySelector('.tabs .tab-btn.active');
-      const activeTab = activeBtn ? activeBtn.dataset.tab : 'dashboard';
-      setActiveTab(activeTab);
-    }, 80);
-  });
+  const oldClick = document.onclick;
 })();
+
+// extra click handlers piggyback on existing delegated listener
+document.addEventListener("click",e=>{
+  const btn=e.target.closest("button, .picker-trigger"); if(!btn) return;
+  if(btn.matches("[data-start-quest]")) startQuest(btn.dataset.startQuest);
+  if(btn.matches("[data-restart-quest]")){
+    const q=getQuest(btn.dataset.restartQuest);
+    if(q){q.startedAt=null; q.expiresAt=null; q.completed=false; q.completedAt=null; startQuest(q.id);}
+  }
+  if(btn.id==="exportQuestPackBtn") exportQuestPack();
+  if(btn.id==="reloadQuestPackBtn") loadQuestPackFile(true);
+});
+
+function bindV81Events(){
+  $("#questType").onchange = updateQuestTargetVisibility;
+  $("#rewardForm").onsubmit = submitRewardForm;
+  $("#questForm").onsubmit = submitQuestForm;
+  $("#importInput").onchange = e=>{const file=e.target.files?.[0]; if(file) importSave(file);};
+  const qp=$("#questPackInput");
+  if(qp) qp.onchange = e=>{const file=e.target.files?.[0]; if(file) importQuestPack(file);};
+}
+
+bindV81Events();
+render();
+setActiveTab("dashboard");
+loadQuestPackFile(false);

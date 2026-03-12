@@ -169,8 +169,9 @@ html, body {
   }
 }
 
+/* ===== V8.1 quest/store pack ===== */
 .settings-group{display:grid;gap:10px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:6px}
-.quest-status-row,.permission-row,.inventory-grid-lite{display:flex;gap:8px;flex-wrap:wrap}
+.permission-row,.inventory-grid-lite{display:flex;gap:8px;flex-wrap:wrap}
 .status-chip{font-size:12px;padding:5px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.05);color:var(--muted)}
 .status-ready{background:rgba(70,241,154,.10);color:var(--emerald);border-color:rgba(70,241,154,.25)}
 .status-active{background:rgba(255,198,74,.10);color:var(--gold);border-color:rgba(255,198,74,.25)}
@@ -184,4 +185,5 @@ html, body {
 .quest-card .quest-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .quest-card .quest-meta{display:grid;gap:8px;margin-top:10px}
 .quest-reward-line{margin-top:8px;font-size:12px;color:var(--muted)}
+code{font-size:12px;background:rgba(255,255,255,.06);padding:2px 6px;border-radius:6px}
 @media(max-width:860px){.inventory-grid-lite,.store-subgrid{grid-template-columns:1fr}}
