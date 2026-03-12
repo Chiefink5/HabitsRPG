@@ -29,14 +29,14 @@
   <div class="quick-add hidden" id="quickAddMenu">
     <button data-open-modal="skillModal">Add Skill</button>
     <button data-open-modal="habitModal">Add Habit</button>
-    <button data-open-modal="rewardModal">Add Reward</button>
+    <button data-open-modal="rewardModal">Add Store Item</button>
     <button data-open-modal="questModal">Add Quest</button>
   </div>
 
   <nav class="tabs">
     <button class="tab-btn active" data-tab="dashboard">Dashboard</button>
     <button class="tab-btn" data-tab="skills">Skills</button>
-    <button class="tab-btn" data-tab="rewards">Rewards</button>
+    <button class="tab-btn" data-tab="rewards">Store</button>
     <button class="tab-btn" data-tab="quests">Quests</button>
     <button class="tab-btn" data-tab="analytics">Analytics</button>
   </nav>
@@ -91,19 +91,21 @@
   </div>
 
   <div class="modal hidden" id="rewardModal">
-    <div class="modal-head"><h3 id="rewardModalTitle">Add Reward</h3><button class="close-btn" data-close-modal>&times;</button></div>
+    <div class="modal-head"><h3 id="rewardModalTitle">Add Store Item</h3><button class="close-btn" data-close-modal>&times;</button></div>
     <form id="rewardForm" class="modal-body">
       <input type="hidden" id="rewardId" />
-      <label>Title<input id="rewardName" required maxlength="40" placeholder="1 Hour Gaming" /></label>
+      <label>Store Item Name<input id="rewardName" required maxlength="40" placeholder="1 Hour Gaming" /></label>
       <label>Cost<input id="rewardCost" type="number" min="1" value="25" required /></label>
+      <label>Store Type<select id="rewardType"><option value="time">Time / Fun</option><option value="permission">Permission Unlock</option><option value="utility">Utility</option><option value="custom">Custom</option></select></label>
       <label>Category<select id="rewardCategory"><option>Fun</option><option>Food</option><option>Rest</option><option>Purchase</option><option>Custom</option></select></label>
+      <label>Permission Key (optional)<input id="rewardPermissionKey" maxlength="60" placeholder="unlock.deepwork" /></label>
       <label>Note<input id="rewardNote" maxlength="80" placeholder="Optional" /></label>
       <label class="toggle-row"><span>Repeatable</span><input id="rewardRepeatable" type="checkbox" checked /></label>
       <div class="field-label">Icon</div>
       <div class="picker-trigger" data-picker-target="rewardIcon">Pick Icon <span id="rewardIconPreview">🎮</span></div>
       <input type="hidden" id="rewardIcon" value="🎮" />
       <div class="modal-actions">
-        <button type="submit" class="primary-btn">Save Reward</button>
+        <button type="submit" class="primary-btn">Save Store Item</button>
         <button type="button" class="danger-btn hidden" id="deleteRewardBtn">Delete</button>
       </div>
     </form>
@@ -117,7 +119,14 @@
       <div id="questTargetHabitWrap"><label>Target Habit<select id="questTargetHabit"></select></label></div>
       <div id="questTargetSkillWrap" class="hidden"><label>Target Skill<select id="questTargetSkill"></select></label></div>
       <label>Target Value<input id="questTargetValue" type="number" min="1" value="5" required /></label>
-      <label>Reward Coins<input id="questRewardCoins" type="number" min="1" value="20" required /></label>
+      <label>Time Limit After Start (hours)<input id="questTimeLimitHours" type="number" min="0" value="0" /></label>
+      <label>Requires Quest Completion<select id="questPrerequisite"><option value="">None</option></select></label>
+      <label>Required Permission Key<input id="questRequiredPermission" maxlength="60" placeholder="unlock.deepwork" /></label>
+      <label>Reward Coins<input id="questRewardCoins" type="number" min="0" value="20" required /></label>
+      <label>Reward Title / Item<input id="questRewardTitle" maxlength="60" placeholder="Deep Work Badge" /></label>
+      <div class="field-label">Reward Icon</div>
+      <div class="picker-trigger" data-picker-target="questRewardIcon">Pick Reward Icon <span id="questRewardIconPreview">🏆</span></div>
+      <input type="hidden" id="questRewardIcon" value="🏆" />
       <label>Custom Title<input id="questTitle" maxlength="60" placeholder="Optional auto-title if blank" /></label>
       <div class="modal-actions">
         <button type="submit" class="primary-btn">Save Quest</button>
@@ -137,6 +146,12 @@
   <div class="modal hidden" id="settingsModal">
     <div class="modal-head"><h3>Settings</h3><button class="close-btn" data-close-modal>&times;</button></div>
     <div class="modal-body">
+      <div class="settings-group">
+        <div class="field-label">Quest Pack</div>
+        <button class="secondary-btn full-btn" id="exportQuestPackBtn">Export Quest Pack</button>
+        <label class="import-label full-btn">Import Quest Pack<input type="file" id="questPackInput" accept=".json,application/json" /></label>
+        <button class="secondary-btn full-btn" id="reloadQuestPackBtn">Reload quests.json</button>
+      </div>
       <button class="secondary-btn full-btn" id="exportBtn">Export Save</button>
       <label class="import-label full-btn">Import Save<input type="file" id="importInput" accept=".json,application/json" /></label>
       <button class="danger-btn full-btn" id="resetBtn">Reset Everything</button>

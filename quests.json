@@ -1,0 +1,43 @@
+{
+  "quests": [
+    {
+      "id": "quest_hydration",
+      "type": "habit_count",
+      "title": "Complete Drink Water 7 times",
+      "targetId": "habit_water",
+      "targetValue": 7,
+      "timeLimitHours": 0,
+      "prerequisiteQuestId": "",
+      "requiredPermission": "",
+      "rewardCoins": 20,
+      "rewardTitle": "Hydration Badge",
+      "rewardIcon": "\ud83d\udca7"
+    },
+    {
+      "id": "quest_guitar2",
+      "type": "skill_level",
+      "title": "Reach Guitar level 2",
+      "targetId": "skill_guitar",
+      "targetValue": 2,
+      "timeLimitHours": 0,
+      "prerequisiteQuestId": "quest_hydration",
+      "requiredPermission": "",
+      "rewardCoins": 25,
+      "rewardTitle": "String Slinger",
+      "rewardIcon": "\ud83c\udfb8"
+    },
+    {
+      "id": "quest_deepwork",
+      "type": "habit_count",
+      "title": "Complete Read 10 Pages 5 times",
+      "targetId": "habit_reading",
+      "targetValue": 5,
+      "timeLimitHours": 48,
+      "prerequisiteQuestId": "quest_guitar2",
+      "requiredPermission": "unlock.deepwork",
+      "rewardCoins": 45,
+      "rewardTitle": "Deep Work Badge",
+      "rewardIcon": "\ud83c\udfc6"
+    }
+  ]
+}
